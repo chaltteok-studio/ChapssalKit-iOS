@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "compose",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wlsdms0122/Compose.git",
+      "state" : {
+        "revision" : "6841f603b3bae0e9cbf66e684a220463248841b7",
+        "version" : "1.2.1"
+      }
+    },
+    {
+      "identity" : "lottie-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-ios.git",
+      "state" : {
+        "revision" : "4e51b71c6ef1b645c9a83de112d627c919143137",
+        "version" : "4.1.3"
+      }
+    },
+    {
+      "identity" : "validator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wlsdms0122/Validator.git",
+      "state" : {
+        "revision" : "ed80e980496b39ce0538bd83320e4ae30d1a2c85",
+        "version" : "1.0.2"
+      }
+    }
+  ],
+  "version" : 2
+}
