@@ -17,11 +17,11 @@ public extension R.Color {
     static var white: UIColor { .traitColor(.init(hex: 0xFFFFFF)) }
     
     // MARK: - Gray Scale
-    static var gray01: UIColor { .traitColor(.init(hex: 0x282828)) }
-    static var gray02: UIColor { .traitColor(.init(hex: 0x727272)) }
-    static var gray03: UIColor { .traitColor(.init(hex: 0x9A9A9A)) }
-    static var gray04: UIColor { .traitColor(.init(hex: 0xCCCCCC)) }
-    static var gray05: UIColor { .traitColor(.init(hex: 0xE2E2E2)) }
+    static var gray01: UIColor { .traitColor(.init(hex: 0x1E1E1E)) }
+    static var gray02: UIColor { .traitColor(.init(hex: 0x404040)) }
+    static var gray03: UIColor { .traitColor(.init(hex: 0x6F6F6F)) }
+    static var gray04: UIColor { .traitColor(.init(hex: 0xA7A7A7)) }
+    static var gray05: UIColor { .traitColor(.init(hex: 0xE0E0E0)) }
     static var gray06: UIColor { .traitColor(.init(hex: 0xF4F4F4)) }
     
     // MARK: - Primary
