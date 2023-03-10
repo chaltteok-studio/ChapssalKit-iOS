@@ -13,21 +13,21 @@ public struct CSUNavigationBar: View {
     }
     
     public struct Configuration {
-        @Default(Color(uiColor: R.Color.gray01))
-        public var textColor: Color?
-        @Default(Font(R.Font.font(ofSize: 18, weight: .medium)))
-        public var font: Font?
-        @Default(Color(uiColor: R.Color.white))
-        public var backgroundColor: Color?
+        @Config
+        public var textColor: Color = Color(uiColor: R.Color.gray01)
+        @Config
+        public var font: Font = Font(R.Font.font(ofSize: 18, weight: .medium))
+        @Config
+        public var backgroundColor: Color = Color(uiColor: R.Color.white)
         
-        @Default([])
-        public var leftAccessories: [any View]?
-        @Default(16)
-        public var leftInterAccessoriesSpacing: CGFloat?
-        @Default([])
-        public var rightAccessories: [any View]?
-        @Default(16)
-        public var rightInterAccessoriesSpacing: CGFloat?
+        @Config
+        public var leftAccessories: [any View] = []
+        @Config
+        public var leftInterAccessoriesSpacing: CGFloat = 16
+        @Config
+        public var rightAccessories: [any View] = []
+        @Config
+        public var rightInterAccessoriesSpacing: CGFloat = 16
     }
     
     public enum Alignment: CaseIterable {
@@ -53,7 +53,7 @@ public struct CSUNavigationBar: View {
                 minHeight: 56,
                 maxHeight: .infinity
             )
-            .background(config.$backgroundColor)
+            .background(config.backgroundColor)
     }
     
     @ViewBuilder
@@ -64,8 +64,8 @@ public struct CSUNavigationBar: View {
             }
             
             Text(title)
-                .foregroundColor(config.$textColor)
-                .font(config.$font)
+                .foregroundColor(config.textColor)
+                .font(config.font)
                 .lineLimit(1)
             
             if alignment == .leading || alignment == .center {
@@ -88,7 +88,7 @@ public struct CSUNavigationBar: View {
                     )
                 )
         } else {
-            if config.$leftAccessories.isEmpty {
+            if config.leftAccessories.isEmpty {
                 EmptyView()
             } else {
                 LeftAccessories()
@@ -98,9 +98,9 @@ public struct CSUNavigationBar: View {
     
     @ViewBuilder
     private func LeftAccessories() -> some View {
-        let accessories = config.$leftAccessories.map { AnyView($0) }
+        let accessories = config.leftAccessories.map { AnyView($0) }
         
-        HStack(spacing: config.$leftInterAccessoriesSpacing) {
+        HStack(spacing: config.leftInterAccessoriesSpacing) {
             ForEach(0 ..< accessories.count, id: \.self) {
                 accessories[$0]
             }
@@ -129,7 +129,7 @@ public struct CSUNavigationBar: View {
                     )
                 )
         } else {
-            if config.$rightAccessories.isEmpty {
+            if config.rightAccessories.isEmpty {
                 EmptyView()
             } else {
                 RightAccessories()
@@ -139,9 +139,9 @@ public struct CSUNavigationBar: View {
     
     @ViewBuilder
     private func RightAccessories() -> some View {
-        let accessories = config.$rightAccessories.map { AnyView($0) }
+        let accessories = config.rightAccessories.map { AnyView($0) }
         
-        HStack(spacing: config.$rightInterAccessoriesSpacing) {
+        HStack(spacing: config.rightInterAccessoriesSpacing) {
             ForEach(0 ..< accessories.count, id: \.self) {
                 accessories[$0]
             }

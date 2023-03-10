@@ -13,12 +13,12 @@ public struct CSUImageLabel: View {
     }
     
     public struct Configuration {
-        @Default(Color(uiColor: R.Color.black))
-        public var textColor: Color?
-        @Default(Color(uiColor: R.Color.black))
-        public var imageColor: Color?
-        @Default(Font(R.Font.font(ofSize: 16, weight: .medium)))
-        public var font: Font?
+        @Config
+        public var textColor: Color = Color(uiColor: R.Color.black)
+        @Config
+        public var imageColor: Color = Color(uiColor: R.Color.black)
+        @Config
+        public var font: Font = Font(R.Font.font(ofSize: 16, weight: .medium))
     }
     
     public enum Direction {
@@ -35,12 +35,12 @@ public struct CSUImageLabel: View {
             VStack(spacing: spacing) {
                 if let image {
                     image
-                        .foregroundColor(config.$imageColor)
+                        .foregroundColor(config.imageColor)
                 }
                 if let text {
                     Text(text)
-                        .foregroundColor(config.$textColor)
-                        .font(config.$font)
+                        .foregroundColor(config.textColor)
+                        .font(config.font)
                 }
             }
             
@@ -48,12 +48,12 @@ public struct CSUImageLabel: View {
             HStack(spacing: spacing) {
                 if let text {
                     Text(text)
-                        .foregroundColor(config.$textColor)
-                        .font(config.$font)
+                        .foregroundColor(config.textColor)
+                        .font(config.font)
                 }
                 if let image {
                     image
-                        .foregroundColor(config.$imageColor)
+                        .foregroundColor(config.imageColor)
                 }
             }
             
@@ -61,12 +61,12 @@ public struct CSUImageLabel: View {
             VStack(spacing: spacing) {
                 if let text {
                     Text(text)
-                        .foregroundColor(config.$textColor)
-                        .font(config.$font)
+                        .foregroundColor(config.textColor)
+                        .font(config.font)
                 }
                 if let image {
                     image
-                        .foregroundColor(config.$imageColor)
+                        .foregroundColor(config.imageColor)
                 }
             }
             
@@ -74,12 +74,12 @@ public struct CSUImageLabel: View {
             HStack(spacing: spacing) {
                 if let image {
                     image
-                        .foregroundColor(config.$imageColor)
+                        .foregroundColor(config.imageColor)
                 }
                 if let text {
                     Text(text)
-                        .foregroundColor(config.$textColor)
-                        .font(config.$font)
+                        .foregroundColor(config.textColor)
+                        .font(config.font)
                 }
             }
         }
@@ -146,7 +146,7 @@ struct CSUImageLabel_Preview: View {
                 )
                     .border(Color.black)
             }
-            
+
             Slider(value: $spacing, in: 0...10, step: 1)
                 .tint(.black)
         }

@@ -1,21 +1,21 @@
 //
-//  CSUInputLineTheme.swift
-//
+//  CSUInputBoxStyle.swift
+//  
 //
 //  Created by JSilver on 2023/02/23.
 //
 
 import SwiftUI
 
-public protocol CSUInputLineState {
+public protocol CSUInputBoxState {
     var textColor: UIColor { get }
     var tintColor: UIColor { get }
     var backgroundColor: UIColor { get }
     var borderColor: UIColor { get }
 }
 
-public struct CSUInputLine: View {
-    public enum State: CSUInputLineState, CaseIterable {
+public struct CSUInputBoxStyle: CSUTextFieldStyle {
+    public enum State: CSUInputBoxState, CaseIterable {
         case normal
         case error
         
@@ -39,63 +39,65 @@ public struct CSUInputLine: View {
         }
     }
     
-    // MARK: - View
-    public var body: some View {
-        CSUTextField(
-            placeholder,
-            text: text
-        )
-            .csuTextField(\.textColor, config.textColor ?? state.textColor)
-            .csuTextField(\.tintColor, config.tintColor ?? state.tintColor)
-            .csuTextField(
-                \.contentInsets,
-                 config.contentInsets ?? .init(
-                    top: 14,
-                    leading: 0,
-                    bottom: 14,
-                    trailing: 0
-                 )
-            )
-            .csuTextField(\.backgroundColor, config.backgroundColor ?? state.backgroundColor)
-            .csuTextField(\.cornerRadius, config.cornerRadius ?? 0)
-            .csuTextField(\.borderEdges, config.borderEdges ?? .bottom)
-            .csuTextField(\.borderWidth, config.borderWidth ?? 1)
-            .csuTextField(\.borderColor, config.borderColor ?? state.borderColor)
+    struct Content: View {
+        // MARK: - View
+        var body: some View {
+            configuration.label
+                .csuTextField(\.textColor, config.$textColor(state.textColor))
+                .csuTextField(\.tintColor, config.$tintColor(state.tintColor))
+                .csuTextField(
+                    \.contentInsets,
+                     config.$contentInsets(.init(
+                        top: 14,
+                        leading: 12,
+                        bottom: 14,
+                        trailing: 12
+                     ))
+                )
+                .csuTextField(\.backgroundColor, config.$backgroundColor(state.backgroundColor))
+                .csuTextField(\.cornerRadius, config.$cornerRadius(8))
+                .csuTextField(\.borderEdges, config.$borderEdges(.all))
+                .csuTextField(\.borderWidth, config.$borderWidth(1))
+                .csuTextField(\.borderColor, config.$borderColor(state.borderColor))
+        }
+        
+        // MARK: - Property
+        let configuration: CSUTextFieldStyleConfiguration
+        let state: any CSUInputBoxState
+        
+        @Environment(\.isEnabled)
+        var isEnabled: Bool
+        
+        @Environment(\.csuTextField)
+        var config: CSUTextField.Configuration
+        
+        // MARK: - Initializer
+        init(_ configuration: Configuration, state: any CSUInputBoxState) {
+            self.configuration = configuration
+            self.state = state
+        }
     }
     
-    // MARK: - Property
-    public var placeholder: String
-    private var text: Binding<String>
-    public var state: any CSUInputLineState
+    public var state: any CSUInputBoxState
     
-    @Environment(\.csuTextField)
-    private var config: CSUTextField.Configuration
-    
-    // MARK: - Initializer
-    public init(
-        _ placeholder: String = "",
-        text: Binding<String>,
-        state: any CSUInputLineState = CSUInputLine.State.normal
-    ) {
-        self.text = text
-        self.placeholder = placeholder
+    public init(state: any CSUInputBoxState) {
         self.state = state
     }
     
-    // MARK: - Public
-    
-    // MARK: - Private
+    public func makeBody(_ configuration: Configuration) -> some View {
+        Content(configuration, state: state)
+    }
 }
 
 #if DEBUG
-struct CSUInputLine_Preview: View {
+struct CSUInputBox_Preview: View {
     @State
     var text: String = ""
     @State
     var focus: Bool = false
     
     @State
-    var state: CSUInputLine.State = .normal
+    var state: CSUInputBoxStyle.State = .normal
     @State
     var secureTextEntryMode: CSUTextField.SecureTextEntryMode = .never
     
@@ -121,7 +123,7 @@ struct CSUInputLine_Preview: View {
                 }
                 
                 Picker("State", selection: $state) {
-                    ForEach(CSUInputLine.State.allCases, id: \.self) { state in
+                    ForEach(CSUInputBoxStyle.State.allCases, id: \.self) { state in
                         switch state {
                         case .normal:
                             Text("Normal")
@@ -135,28 +137,29 @@ struct CSUInputLine_Preview: View {
                 .pickerStyle(.segmented)
             
             VStack {
-                CSUInputLine(
+                CSUTextField(
                     "input",
-                    text: $text,
-                    state: state
+                    text: $text
                 )
+                    .csuTextField(\.style, .inputBox(state: state))
                     .csuTextField(\.isEditing, $focus)
                     .csuTextField(\.secureTextEntryMode, secureTextEntryMode)
                     .fixedSize(horizontal: false, vertical: true)
                 
-                CSUFillButton(title: "Resign First Responder") {
+                CSUButton(title: "Resign First Responder") {
                     focus = false
                 }
-                .fixedSize(horizontal: false, vertical: true)
+                    .csuButton(\.style, .fill)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
             .padding(.horizontal, 16)
     }
 }
 
-struct CSUInputLine_Previews: PreviewProvider {
+struct CSUInputBox_Previews: PreviewProvider {
     static var previews: some View {
-        CSUInputLine_Preview()
+        CSUInputBox_Preview()
             .previewLayout(.sizeThatFits)
     }
 }
