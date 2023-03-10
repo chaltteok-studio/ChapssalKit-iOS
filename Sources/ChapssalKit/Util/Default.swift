@@ -21,7 +21,8 @@ public struct Default<Value> {
         }
     }
     
-    init(_ default: Value) {
+    init(wrappedValue: Value? = nil, _ default: Value) {
         self.default = `default`
+        self.wrappedValue = wrappedValue
     }
 }
