@@ -45,28 +45,31 @@ public struct CSUInputLine: View {
             placeholder,
             text: text
         )
-            .csuTextField(\.textColor, state.textColor)
-            .csuTextField(\.tintColor, state.tintColor)
+            .csuTextField(\.textColor, config.textColor ?? state.textColor)
+            .csuTextField(\.tintColor, config.tintColor ?? state.tintColor)
             .csuTextField(
                 \.contentInsets,
-                 .init(
+                 config.contentInsets ?? .init(
                     top: 14,
                     leading: 0,
                     bottom: 14,
                     trailing: 0
                  )
             )
-            .csuTextField(\.backgroundColor, state.backgroundColor)
-            .csuTextField(\.cornerRadius, 0)
-            .csuTextField(\.borderEdges, .bottom)
-            .csuTextField(\.borderWidth, 1)
-            .csuTextField(\.borderColor, state.borderColor)
+            .csuTextField(\.backgroundColor, config.backgroundColor ?? state.backgroundColor)
+            .csuTextField(\.cornerRadius, config.cornerRadius ?? 0)
+            .csuTextField(\.borderEdges, config.borderEdges ?? .bottom)
+            .csuTextField(\.borderWidth, config.borderWidth ?? 1)
+            .csuTextField(\.borderColor, config.borderColor ?? state.borderColor)
     }
     
     // MARK: - Property
     public var placeholder: String
     private var text: Binding<String>
     public var state: any CSUInputLineState
+    
+    @Environment(\.csuTextField)
+    private var config: CSUTextField.Configuration
     
     // MARK: - Initializer
     public init(

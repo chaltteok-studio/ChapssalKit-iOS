@@ -14,10 +14,12 @@ public struct CSUTextField: View {
     }
     
     public struct Configuration {
-        @Default(R.Color.gray01)
-        public var textColor: UIColor?
         @Default(R.Color.green01)
         public var tintColor: UIColor?
+        @Default(R.Color.gray01)
+        public var textColor: UIColor?
+        @Default(R.Color.gray03)
+        public var placeholderColor: UIColor?
         @Default(R.Font.font(ofSize: 16, weight: .medium))
         public var font: UIFont?
         @Default(EdgeInsets(top: 14, leading: 12, bottom: 14, trailing: 12))
