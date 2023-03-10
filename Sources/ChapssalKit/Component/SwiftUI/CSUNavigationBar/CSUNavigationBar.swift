@@ -14,20 +14,20 @@ public struct CSUNavigationBar: View {
     
     public struct Configuration {
         @Default(Color(uiColor: R.Color.gray01))
-        var textColor: Color?
+        public var textColor: Color?
         @Default(Font(R.Font.font(ofSize: 18, weight: .medium)))
-        var font: Font?
+        public var font: Font?
         @Default(Color(uiColor: R.Color.white))
-        var backgroundColor: Color?
+        public var backgroundColor: Color?
         
         @Default([])
-        var leftAccessories: [any View]?
+        public var leftAccessories: [any View]?
         @Default(16)
-        var leftInterAccessoriesSpacing: CGFloat?
+        public var leftInterAccessoriesSpacing: CGFloat?
         @Default([])
-        var rightAccessories: [any View]?
+        public var rightAccessories: [any View]?
         @Default(16)
-        var rightInterAccessoriesSpacing: CGFloat?
+        public var rightInterAccessoriesSpacing: CGFloat?
     }
     
     public enum Alignment: CaseIterable {
