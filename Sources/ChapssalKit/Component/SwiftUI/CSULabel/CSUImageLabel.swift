@@ -28,11 +28,46 @@ public struct CSUImageLabel: View {
         case trailing
     }
     
+    public enum Alignment {
+        case leading
+        case center
+        case trailing
+        
+        var verticalAlignment: VerticalAlignment {
+            switch self {
+            case .leading:
+                return .top
+                
+            case .center:
+                return .center
+                
+            case .trailing:
+                return .bottom
+            }
+        }
+        
+        var horizontalAlignment: HorizontalAlignment {
+            switch self {
+            case .leading:
+                return .leading
+                
+            case .center:
+                return .center
+                
+            case .trailing:
+                return .trailing
+            }
+        }
+    }
+    
     // MARK: - View
     public var body: some View {
         switch direction {
         case .top:
-            VStack(spacing: spacing) {
+            VStack(
+                alignment: alignment.horizontalAlignment,
+                spacing: spacing
+            ) {
                 if let image {
                     image
                         .foregroundColor(config.imageColor)
@@ -45,7 +80,10 @@ public struct CSUImageLabel: View {
             }
             
         case .trailing:
-            HStack(spacing: spacing) {
+            HStack(
+                alignment: alignment.verticalAlignment,
+                spacing: spacing
+            ) {
                 if let text {
                     Text(text)
                         .foregroundColor(config.textColor)
@@ -58,7 +96,10 @@ public struct CSUImageLabel: View {
             }
             
         case .bottom:
-            VStack(spacing: spacing) {
+            VStack(
+                alignment: alignment.horizontalAlignment,
+                spacing: spacing
+            ) {
                 if let text {
                     Text(text)
                         .foregroundColor(config.textColor)
@@ -71,7 +112,10 @@ public struct CSUImageLabel: View {
             }
             
         case .leading:
-            HStack(spacing: spacing) {
+            HStack(
+                alignment: alignment.verticalAlignment,
+                spacing: spacing
+            ) {
                 if let image {
                     image
                         .foregroundColor(config.imageColor)
@@ -90,6 +134,7 @@ public struct CSUImageLabel: View {
     public var image: Image?
     public var spacing: CGFloat
     public var direction: Direction
+    public var alignment: Alignment
     
     @Environment(\.csuImageLabel)
     private var config: Configuration
@@ -99,12 +144,14 @@ public struct CSUImageLabel: View {
         text: String? = nil,
         image: Image? = nil,
         spacing: CGFloat = 0,
-        direction: Direction = .leading
+        direction: Direction = .leading,
+        alignment: Alignment = .center
     ) {
         self.text = text
         self.image = image
         self.spacing = spacing
         self.direction = direction
+        self.alignment = alignment
     }
     
     // MARK: - Public
@@ -121,28 +168,32 @@ struct CSUImageLabel_Preview: View {
                     text: "Like",
                     image: .init(systemName: "heart.fill"),
                     spacing: spacing,
-                    direction: .top
+                    direction: .top,
+                    alignment: .leading
                 )
                     .border(Color.black)
                 CSUImageLabel(
                     text: "Like",
                     image: .init(systemName: "heart.fill"),
                     spacing: spacing,
-                    direction: .trailing
+                    direction: .trailing,
+                    alignment: .leading
                 )
                     .border(Color.black)
                 CSUImageLabel(
                     text: "Like",
                     image: .init(systemName: "heart.fill"),
                     spacing: spacing,
-                    direction: .bottom
+                    direction: .bottom,
+                    alignment: .leading
                 )
                     .border(Color.black)
                 CSUImageLabel(
                     text: "Like",
                     image: .init(systemName: "heart.fill"),
                     spacing: spacing,
-                    direction: .leading
+                    direction: .leading,
+                    alignment: .leading
                 )
                     .border(Color.black)
             }
