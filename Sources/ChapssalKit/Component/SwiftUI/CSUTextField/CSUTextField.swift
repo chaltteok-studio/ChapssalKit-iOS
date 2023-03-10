@@ -237,7 +237,7 @@ public struct CSUTextField: View {
                     Image(uiImage: R.Icon.ic24Clear)
                         .foregroundColor(Color(uiColor: R.Color.gray04))
                 }
-                    .buttonStyle(.none)
+                    .buttonStyle(.plain)
             }
         }
         
@@ -256,7 +256,7 @@ public struct CSUTextField: View {
                     Image(uiImage: image)
                         .foregroundColor(Color(uiColor: color))
                 }
-                    .buttonStyle(.none)
+                    .buttonStyle(.plain)
             }
         }
         
