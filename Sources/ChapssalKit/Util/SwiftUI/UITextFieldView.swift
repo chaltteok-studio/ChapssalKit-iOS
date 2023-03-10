@@ -74,6 +74,7 @@ public struct UITextFieldView: UIViewRepresentable {
     
     // MARK: - Property
     public var placeholder: String?
+    public var placeholderColor: UIColor?
     public var textColor: UIColor?
     public var tintColor: UIColor?
     public var font: UIFont?
@@ -122,7 +123,14 @@ public struct UITextFieldView: UIViewRepresentable {
     
     public func updateUIView(_ uiView: UITextField, context: Context) {
         uiView.text = text
-        uiView.placeholder = placeholder
+        if let placeholder {
+            uiView.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [
+                    .foregroundColor: placeholderColor as Any
+                ]
+            )
+        }
         uiView.textColor = textColor
         uiView.tintColor = tintColor
         uiView.font = font
@@ -162,6 +170,12 @@ public struct UITextFieldView: UIViewRepresentable {
     public func textColor(_ color: UIColor?) -> Self {
         var view = self
         view.textColor = color
+        return view
+    }
+    
+    public func placeholderColor(_ color: UIColor?) -> Self {
+        var view = self
+        view.placeholderColor = color
         return view
     }
     

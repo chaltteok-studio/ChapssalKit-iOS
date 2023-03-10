@@ -13,12 +13,12 @@ public struct CSUImageLabel: View {
     }
     
     public struct Configuration {
+        @Default(Color(uiColor: R.Color.black))
+        public var textColor: Color?
+        @Default(Color(uiColor: R.Color.black))
+        public var imageColor: Color?
         @Default(Font(R.Font.font(ofSize: 16, weight: .medium)))
-        var font: Font?
-        @Default(Color(uiColor: R.Color.black))
-        var textColor: Color?
-        @Default(Color(uiColor: R.Color.black))
-        var imageColor: Color?
+        public var font: Font?
     }
     
     public enum Direction {

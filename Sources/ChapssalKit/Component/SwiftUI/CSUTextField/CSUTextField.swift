@@ -200,6 +200,7 @@ public struct CSUTextField: View {
         ZStack(alignment: .trailing) {
             UITextFieldView(placeholder, text: $text)
                 .textColor(config.$textColor)
+                .placeholderColor(config.$placeholderColor)
                 .tintColor(config.$tintColor)
                 .font(config.$font)
                 .editing($isEditing)
@@ -216,17 +217,6 @@ public struct CSUTextField: View {
                 .onReturn {
                     config.onReturn?()
                 }
-            
-            LinearGradient(
-                colors: [
-                    backgroundColor.opacity(0),
-                    backgroundColor
-                ],
-                startPoint: .init(x: 0, y: 0.5),
-                endPoint: .init(x: 1, y: 0.5)
-            )
-                .frame(width: 24)
-                .allowsHitTesting(false)
         }
     }
     

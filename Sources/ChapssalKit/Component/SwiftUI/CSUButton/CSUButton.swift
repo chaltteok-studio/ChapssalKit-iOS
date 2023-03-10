@@ -35,8 +35,7 @@ public struct CSUButton: View {
         @Default(Color(uiColor: R.Color.green01))
         public var borderColor: Color?
         
-        @Default(R.Lottie.loadingWhite)
-        public var animation: LottieAnimation?
+        public var animation: LottieAnimation? = R.Lottie.loadingWhite
         @Default(false)
         public var isLoading: Bool?
     }
@@ -68,6 +67,7 @@ public struct CSUButton: View {
                 RoundedRectangle(cornerRadius: config.$cornerRadius)
                     .stroke(config.$borderColor, lineWidth: config.$borderWidth)
             )
+            .contentShape(Rectangle())
     }
     
     @ViewBuilder
@@ -81,16 +81,18 @@ public struct CSUButton: View {
             )
                 .csuImageLabel(\.textColor, config.$textColor)
                 .csuImageLabel(\.imageColor, config.$imageColor)
-                .font(config.$font)
+                .csuImageLabel(\.font, config.$font)
                 .opacity(config.$isLoading ? 0 : 1)
             
-            AnimationView(
-                animation: config.$animation,
-                loopMode: .loop
-            )
-                .loading(config.$isLoading)
-                .opacity(config.$isLoading ? 1 : 0)
-                .fixedSize()
+            if let animation = config.animation {
+                AnimationView(
+                    animation: animation,
+                    loopMode: .loop
+                )
+                    .loading(config.$isLoading)
+                    .opacity(config.$isLoading ? 1 : 0)
+                    .fixedSize()
+            }
         }
             .padding(config.$contentInsets)
     }
@@ -139,143 +141,152 @@ public struct CSUButton: View {
 #if DEBUG
 struct CSUButton_Preview: View {
     var body: some View {
-        VStack {
+        ScrollView {
             VStack {
-                HStack {
-                    CSUTextButton(title: "Text") { }
-                        .fixedSize()
+                VStack(alignment: .leading) {
+                    Text("Default")
+                        .font(Font(R.Font.font(ofSize: 14, weight: .light)))
+                    HStack {
+                        CSUButton(title: "Default") { }
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        CSUButton(title: "Default") { }
+                            .csuButton(\.isLoading, true)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                     
-                    CSUTextButton(title: "Text") { }
-                        .csuButton(\.isLoading, true)
-                        .fixedSize()
+                    HStack {
+                        CSUButton(title: "Default") { }
+                            .disabled(true)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        CSUButton(title: "Default") { }
+                            .csuButton(\.isLoading, true)
+                            .disabled(true)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
                 
-                HStack {
-                    CSUTextButton(title: "Text") { }
-                        .disabled(true)
-                        .fixedSize()
+                VStack(alignment: .leading) {
+                    Text("Text")
+                        .font(Font(R.Font.font(ofSize: 14, weight: .light)))
+                    HStack {
+                        CSUTextButton(title: "Text") { }
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        CSUTextButton(title: "Text") { }
+                            .csuButton(\.isLoading, true)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                     
-                    CSUTextButton(title: "Text") { }
-                        .csuButton(\.isLoading, true)
-                        .disabled(true)
-                        .fixedSize()
-                }
-            }
-            
-            VStack {
-                HStack {
-                    CSUFillButton(title: "Fill") { }
-                        .fixedSize()
-                    
-                    CSUFillButton(title: "Fill") { }
-                        .csuButton(\.isLoading, true)
-                        .fixedSize()
-                }
-                
-                HStack {
-                    CSUFillButton(title: "Fill") { }
-                        .disabled(true)
-                        .fixedSize()
-                    
-                    CSUFillButton(title: "Fill") { }
-                        .csuButton(\.isLoading, true)
-                        .disabled(true)
-                        .fixedSize()
-                }
-            }
-            
-            VStack {
-                HStack {
-                    CSUFillButton(title: "Fill") { }
-                        .csuButton(\.cornerRadius, 0)
-                        .fixedSize()
-                    
-                    CSUFillButton(title: "Fill") { }
-                        .csuButton(\.cornerRadius, 0)
-                        .csuButton(\.isLoading, true)
-                        .fixedSize()
+                    HStack {
+                        CSUTextButton(title: "Text") { }
+                            .disabled(true)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        CSUTextButton(title: "Text") { }
+                            .csuButton(\.isLoading, true)
+                            .disabled(true)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
                 
-                HStack {
-                    CSUFillButton(title: "Fill") { }
-                        .csuButton(\.cornerRadius, 0)
-                        .disabled(true)
-                        .fixedSize()
+                VStack(alignment: .leading) {
+                    Text("Fill")
+                        .font(Font(R.Font.font(ofSize: 14, weight: .light)))
+                    HStack {
+                        CSUFillButton(title: "Fill") { }
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        CSUFillButton(title: "Fill") { }
+                            .csuButton(\.isLoading, true)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                     
-                    CSUFillButton(title: "Fill") { }
-                        .csuButton(\.cornerRadius, 0)
-                        .csuButton(\.isLoading, true)
-                        .disabled(true)
-                        .fixedSize()
-                }
-            }
-            
-            VStack {
-                HStack {
-                    CSULineButton(title: "Line") { }
-                        .fixedSize()
-                    
-                    CSULineButton(title: "Line") { }
-                        .csuButton(\.isLoading, true)
-                        .fixedSize()
+                    HStack {
+                        CSUFillButton(title: "Fill") { }
+                            .disabled(true)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        CSUFillButton(title: "Fill") { }
+                            .csuButton(\.isLoading, true)
+                            .disabled(true)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
                 
-                HStack {
-                    CSULineButton(title: "Line") { }
-                        .disabled(true)
-                        .fixedSize()
+                VStack(alignment: .leading) {
+                    Text("Line")
+                        .font(Font(R.Font.font(ofSize: 14, weight: .light)))
+                    HStack {
+                        CSULineButton(title: "Line") { }
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        CSULineButton(title: "Line") { }
+                            .csuButton(\.isLoading, true)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                     
-                    CSULineButton(title: "Line") { }
-                        .csuButton(\.isLoading, true)
-                        .disabled(true)
-                        .fixedSize()
+                    HStack {
+                        CSULineButton(title: "Line") { }
+                            .disabled(true)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        CSULineButton(title: "Line") { }
+                            .csuButton(\.isLoading, true)
+                            .disabled(true)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("Fixed Size")
+                        .font(Font(R.Font.font(ofSize: 14, weight: .light)))
+                    HStack {
+                        Spacer()
+                        
+                        CSUButton(title: "Fixed") { }
+                            .fixedSize()
+                        
+                        CSUFillButton(title: "Fixed") { }
+                            .fixedSize()
+                        
+                        CSUTextButton(title: "Fixed") { }
+                            .fixedSize()
+                        
+                        CSULineButton(title: "Fixed") { }
+                            .fixedSize()
+                        
+                        Spacer()
+                    }
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("Custom")
+                        .font(Font(R.Font.font(ofSize: 14, weight: .light)))
+                    
+                    HStack {
+                        CSUButton(image: Image(uiImage: R.Icon.ic24Archive)) { }
+                            .csuButton(\.animation, nil)
+                            .csuButton(\.cornerRadius, 26)
+                            .fixedSize()
+                        
+                        CSUButton(title: "Custom") { }
+                            .csuButton(\.contentInsets, .init(.zero))
+                            .csuButton(\.font, Font(R.Font.font(ofSize: 48, weight: .regular)))
+                            .fixedSize()
+                    }
                 }
             }
-            
-            VStack {
-                HStack {
-                    CSUButton(title: "Text") { }
-                        .csuButton(\.font, Font(R.Font.font(ofSize: 88, weight: .bold)))
-                        .csuButton(\.contentInsets, .init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                        .fixedSize()
-                    
-                    CSUButton(title: "Text") { }
-                        .csuButton(\.font, Font(R.Font.font(ofSize: 88, weight: .bold)))
-                        .csuButton(
-                            \.contentInsets,
-                             .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-                        )
-                        .csuButton(\.isLoading, true)
-                        .fixedSize()
-                }
-            }
-            
-            VStack {
-                HStack {
-                    CSUButton(image: Image(uiImage: R.Icon.ic24Archive)) { }
-                        .csuButton(\.animation, nil)
-                        .csuButton(\.cornerRadius, 26)
-                        .fixedSize()
-                    
-                    CSUButton(title: "Text") { }
-                        .csuButton(\.font, Font(R.Font.font(ofSize: 12, weight: .bold)))
-                        .fixedSize()
-                    
-                    CSUButton(title: "Text") { }
-                        .csuButton(\.font, Font(R.Font.font(ofSize: 12, weight: .bold)))
-                        .csuButton(\.isLoading, true)
-                        .fixedSize()
-                }
-            }
+                .ignoresSafeArea()
         }
+            .padding(.horizontal, 16)
     }
 }
 
 struct CSUButton_Previews: PreviewProvider {
     static var previews: some View {
         CSUButton_Preview()
-            .background(Color(red: 0.9, green: 0.9, blue: 0.9))
-            .previewLayout(.sizeThatFits)
     }
 }
 #endif
