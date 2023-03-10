@@ -1,36 +1,24 @@
 //
-//  CSUButtonStyle.swift
+//  CSUNavigationBarStyle.swift
 //  
 //
-//  Created by JSilver on 2023/03/10.
+//  Created by JSilver on 2023/03/11.
 //
 
 import SwiftUI
 
-public protocol CSUButtonStyle {
+public protocol CSUNavigationBarStyle {
     associatedtype Body: View
-    typealias Configuration = CSUButtonStyleConfiguration
+    typealias Configuration = CSUNavigationBarStyleConfiguration
     
     func makeBody(_ configuration: Configuration) -> Body
 }
 
-public extension CSUButtonStyle where Self == CSUPlainButtonStyle {
-    static var plain: Self { CSUPlainButtonStyle() }
+public extension CSUNavigationBarStyle where Self == CSUPlainNavigationBarStyle {
+    static var plain: Self { CSUPlainNavigationBarStyle() }
 }
 
-public extension CSUButtonStyle where Self == CSUFillButtonStyle {
-    static var fill: Self { CSUFillButtonStyle() }
-}
-
-public extension CSUButtonStyle where Self == CSULineButtonStyle {
-    static var line: Self { CSULineButtonStyle() }
-}
-
-public extension CSUButtonStyle where Self == CSUTextButtonStyle {
-    static var text: Self { CSUTextButtonStyle() }
-}
-
-public struct CSUButtonStyleConfiguration {
+public struct CSUNavigationBarStyleConfiguration {
     public struct Label: View {
         // MARK: - View
         public var body: AnyView
@@ -49,7 +37,6 @@ public struct CSUButtonStyleConfiguration {
     
     // MARK: - Property
     public let label: Label
-    public let isPressed: Bool
     
     // MARK: - Initlalizer
     
@@ -58,7 +45,7 @@ public struct CSUButtonStyleConfiguration {
     // MARK: - Private
 }
 
-public struct CSUPlainButtonStyle: CSUButtonStyle {
+public struct CSUPlainNavigationBarStyle: CSUNavigationBarStyle {
     private struct Content: View {
         // MARK: - View
         var body: some View {
@@ -66,7 +53,7 @@ public struct CSUPlainButtonStyle: CSUButtonStyle {
         }
         
         // MARK: - Property
-        let configuration: CSUButtonStyleConfiguration
+        let configuration: CSUNavigationBarStyleConfiguration
         
         // MARK: - Initlalizer
         init(_ configuration: Configuration) {

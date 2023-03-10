@@ -125,7 +125,7 @@ public struct CSUTextField: View {
         }
     }
     
-    struct Content: View {
+    private struct Content: View {
         // MARK: - View
         var body: some View {
             let backgroundColor = Color(uiColor: config.backgroundColor)

@@ -56,7 +56,7 @@ public struct CSUTextFieldStyleConfiguration {
 }
 
 public struct CSUPlainTextFieldStyle: CSUTextFieldStyle {
-    struct Content: View {
+    private struct Content: View {
         // MARK: - View
         var body: some View {
             configuration.label

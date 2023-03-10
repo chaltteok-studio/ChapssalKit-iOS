@@ -9,7 +9,7 @@ import SwiftUI
 import Lottie
 
 public struct CSUTextButtonStyle: CSUButtonStyle {
-    struct Content: View {
+    private struct Content: View {
         // MARK: - View
         var body: some View {
             configuration.label

@@ -39,7 +39,7 @@ public struct CSUInputBoxStyle: CSUTextFieldStyle {
         }
     }
     
-    struct Content: View {
+    private struct Content: View {
         // MARK: - View
         var body: some View {
             configuration.label
