@@ -142,7 +142,7 @@ final class ChapssalKitTests: XCTestCase {
         // Then
     }
     
-    func test_that_load_localizable() {
+    func test_that_load_localization() {
         // Given
         
         // When

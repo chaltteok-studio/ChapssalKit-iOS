@@ -1,5 +1,5 @@
 //
-//  Resource+Localizable.swift
+//  Resource+Localization.swift
 //  
 //
 //  Created by JSilver on 2021/06/06.
@@ -8,9 +8,9 @@
 import Foundation
 
 public extension R {
-    enum Localizable { }
+    enum Localization { }
 }
 
-public extension R.Localizable {
+public extension R.Localization {
     
 }
