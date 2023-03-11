@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import Validator
 
 public struct CSUTextField: View {
     struct ConfigurationKey: EnvironmentKey {
@@ -74,6 +75,9 @@ public struct CSUTextField: View {
         public var isEditing: Binding<Bool>?
         @Config
         public var onReturn: (() -> Void)?
+        
+        @Config
+        public var validator: AnyValidator<String>?
         
         @Config
         public var style: any CSUTextFieldStyle = .plain
@@ -215,6 +219,7 @@ public struct CSUTextField: View {
                     .autocapitalization(config.autocapitalization)
                     .returnKeyType(config.returnKeyType)
                     .keyboardType(config.keyboardType)
+                    .validator(config.validator)
                     .inputAccessoryView(
                         height: config.inputAccessoryViewHeight,
                         inputAccessoryView: config.inputAccessoryView

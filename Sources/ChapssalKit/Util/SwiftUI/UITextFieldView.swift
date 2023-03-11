@@ -8,13 +8,15 @@
 import UIKit
 import SwiftUI
 import Compose
+import Validator
 
 public struct UITextFieldView: UIViewRepresentable {
     public final class Coordinator: NSObject, UITextFieldDelegate {
         // MARK: - Property
+        var validator: (any Validator<String>)?
         private var inputAccessoryViewCache: ComposableView?
         
-        public var onReturn: (() -> Void)?
+        var onReturn: (() -> Void)?
         private let isEditing: Binding<Bool>?
         
         // MARK: - Initializer
@@ -31,6 +33,18 @@ public struct UITextFieldView: UIViewRepresentable {
         public func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
             guard isEditing?.wrappedValue ?? false else { return }
             isEditing?.wrappedValue = false
+        }
+        
+        public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+            guard let newString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) else { return true }
+            
+            guard !newString.isEmpty else {
+                // Empty string alway true.
+                return true
+            }
+            
+            // Validate new string.
+            return validator?.validate(newString) ?? true
         }
         
         public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -89,6 +103,8 @@ public struct UITextFieldView: UIViewRepresentable {
     
     public var inputAccessoryViewHeight: CGFloat = 0
     public var inputAccessoryView: (any View)? = nil
+    
+    public var validator: (any Validator<String>)?
     
     public var isEditing: Binding<Bool>?
     
@@ -149,6 +165,7 @@ public struct UITextFieldView: UIViewRepresentable {
                 inputAccessoryView
             )
         
+        context.coordinator.validator = validator
         context.coordinator.onReturn = onReturn
         
         if (isEditing?.wrappedValue ?? false) && !uiView.isFirstResponder {
@@ -239,6 +256,12 @@ public struct UITextFieldView: UIViewRepresentable {
             height: height,
             inputAccessoryView: accessoryView()
         )
+    }
+    
+    public func validator(_ validator: (any Validator<String>)?) -> Self {
+        var view = self
+        view.validator = validator
+        return view
     }
     
     public func editing(_ isEditing: Binding<Bool>) -> Self {

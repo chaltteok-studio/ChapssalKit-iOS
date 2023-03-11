@@ -17,7 +17,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/wlsdms0122/Compose.git", .upToNextMajor(from: "1.2.1")),
-        .package(url: "https://github.com/wlsdms0122/Validator.git", .upToNextMajor(from: "1.0.2")),
+        .package(url: "https://github.com/wlsdms0122/Validator.git", .upToNextMajor(from: "1.0.3")),
         .package(url: "https://github.com/airbnb/lottie-ios.git", .upToNextMajor(from: "4.1.2"))
     ],
     targets: [
