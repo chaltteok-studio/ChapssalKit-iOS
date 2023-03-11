@@ -26,7 +26,7 @@ public struct CSUButton: View {
         @Config
         public var backgroundColor: Color = Color(uiColor: R.Color.green01)
         @Config
-        public var pressedColor: Color = Color(uiColor: R.Color.white.withAlphaComponent(0.3))
+        public var pressedColor: Color? = Color(uiColor: R.Color.white.withAlphaComponent(0.3))
         
         @Config
         public var cornerRadius: CGFloat = 0
@@ -104,8 +104,8 @@ public struct CSUButton: View {
         
         @ViewBuilder
         private func HighlightView() -> some View {
-            if isHighlight {
-                config.pressedColor
+            if let pressedColor = config.pressedColor, isHighlight {
+                pressedColor
             }
         }
         
