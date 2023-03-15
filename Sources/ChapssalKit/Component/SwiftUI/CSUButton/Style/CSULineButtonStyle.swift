@@ -18,6 +18,10 @@ public struct CSULineButtonStyle: CSUButtonStyle {
                      config.$textColor(Color(uiColor: isEnabled ? R.Color.green01 : R.Color.gray03))
                 )
                 .csuButton(
+                    \.imageColor,
+                     config.$imageColor(Color(uiColor: isEnabled ? R.Color.green01 : R.Color.gray03))
+                )
+                .csuButton(
                     \.backgroundColor,
                      config.$backgroundColor(.clear)
                 )

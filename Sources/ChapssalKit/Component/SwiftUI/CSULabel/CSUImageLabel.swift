@@ -196,6 +196,14 @@ struct CSUImageLabel_Preview: View {
                     alignment: .leading
                 )
                     .border(Color.black)
+                CSUImageLabel(
+                    text: "Like"
+                )
+                    .border(Color.black)
+                CSUImageLabel(
+                    image: .init(systemName: "heart.fill")
+                )
+                    .border(Color.black)
             }
 
             Slider(value: $spacing, in: 0...10, step: 1)

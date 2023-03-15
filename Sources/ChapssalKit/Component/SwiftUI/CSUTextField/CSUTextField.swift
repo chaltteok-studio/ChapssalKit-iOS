@@ -138,33 +138,6 @@ public struct CSUTextField: View {
             ZStack {
                 ContentView()
             }
-                .frame(minHeight: 52)
-                .background(backgroundColor)
-                .cornerRadius(config.cornerRadius)
-                .overlay(
-                    EdgeBorder(
-                        edges: config.borderEdges,
-                        cornerRadius: config.cornerRadius
-                    )
-                    .stroke(
-                        borderColor,
-                        lineWidth: config.borderWidth
-                    )
-                )
-        }
-        
-        @ViewBuilder
-        private func Root(
-            placeholder: String,
-            text: Binding<String>
-        ) -> some View {
-            let backgroundColor = Color(uiColor: config.backgroundColor)
-            let borderColor = isEditing ? Color(uiColor: config.tintColor) : Color(uiColor: config.borderColor)
-            
-            ZStack {
-                ContentView()
-            }
-                .frame(minHeight: 52)
                 .background(backgroundColor)
                 .cornerRadius(config.cornerRadius)
                 .overlay(
@@ -192,6 +165,7 @@ public struct CSUTextField: View {
                     TextField()
                     ClearButton()
                 }
+                    .frame(minHeight: 24)
                 
                 SecureTextEntryButton()
                 
@@ -206,28 +180,26 @@ public struct CSUTextField: View {
         
         @ViewBuilder
         private func TextField() -> some View {
-            ZStack(alignment: .trailing) {
-                UITextFieldView(placeholder, text: $text)
-                    .textColor(config.textColor)
-                    .placeholderColor(config.placeholderColor)
-                    .tintColor(config.tintColor)
-                    .font(config.font)
-                    .editing($isEditing)
-                    .secureTextEntry(isSecureTextEntry)
-                    .autocorrection(config.isAutocorrection)
-                    .spellChecking(config.isSpellChecking)
-                    .autocapitalization(config.autocapitalization)
-                    .returnKeyType(config.returnKeyType)
-                    .keyboardType(config.keyboardType)
-                    .validator(config.validator)
-                    .inputAccessoryView(
-                        height: config.inputAccessoryViewHeight,
-                        inputAccessoryView: config.inputAccessoryView
-                    )
-                    .onReturn {
-                        config.onReturn?()
-                    }
-            }
+            UITextFieldView(placeholder, text: $text)
+                .textColor(config.textColor)
+                .placeholderColor(config.placeholderColor)
+                .tintColor(config.tintColor)
+                .font(config.font)
+                .editing($isEditing)
+                .secureTextEntry(isSecureTextEntry)
+                .autocorrection(config.isAutocorrection)
+                .spellChecking(config.isSpellChecking)
+                .autocapitalization(config.autocapitalization)
+                .returnKeyType(config.returnKeyType)
+                .keyboardType(config.keyboardType)
+                .validator(config.validator)
+                .inputAccessoryView(
+                    height: config.inputAccessoryViewHeight,
+                    inputAccessoryView: config.inputAccessoryView
+                )
+                .onReturn {
+                    config.onReturn?()
+                }
         }
         
         @ViewBuilder

@@ -18,6 +18,10 @@ public struct CSUFillButtonStyle: CSUButtonStyle {
                      config.$textColor(Color(uiColor: R.Color.white))
                 )
                 .csuButton(
+                    \.imageColor,
+                     config.$imageColor(Color(uiColor: R.Color.white))
+                )
+                .csuButton(
                     \.backgroundColor,
                      config.$backgroundColor(Color(uiColor: isEnabled ? R.Color.green01 : R.Color.gray04))
                 )

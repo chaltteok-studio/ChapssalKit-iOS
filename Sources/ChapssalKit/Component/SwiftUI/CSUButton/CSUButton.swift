@@ -21,7 +21,7 @@ public struct CSUButton: View {
         @Config
         public var font: Font = Font(R.Font.font(ofSize: 16, weight: .medium))
         @Config
-        public var contentInsets: EdgeInsets = EdgeInsets(top: 14, leading: 14, bottom: 14, trailing: 14)
+        public var contentInsets: EdgeInsets = EdgeInsets(top: 17, leading: 17, bottom: 17, trailing: 17)
         
         @Config
         public var backgroundColor: Color = Color(uiColor: R.Color.green01)
@@ -63,7 +63,6 @@ public struct CSUButton: View {
             }
                 .frame(
                     maxWidth: .infinity,
-                    minHeight: 52,
                     maxHeight: .infinity
                 )
                 .background(config.backgroundColor)
@@ -195,6 +194,9 @@ struct CSUButton_Preview: View {
                         CSUButton(title: "Default") { }
                             .fixedSize(horizontal: false, vertical: true)
                         
+                        CSUButton(image: Image(systemName: "bookmark.fill")) { }
+                            .fixedSize(horizontal: false, vertical: true)
+                        
                         CSUButton(title: "Default") { }
                             .csuButton(\.isLoading, true)
                             .fixedSize(horizontal: false, vertical: true)
@@ -209,6 +211,10 @@ struct CSUButton_Preview: View {
                             .csuButton(\.style, .text)
                             .fixedSize(horizontal: false, vertical: true)
                         
+                        CSUButton(image: Image(systemName: "bookmark.fill")) { }
+                            .csuButton(\.style, .text)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
                         CSUButton(title: "Text") { }
                             .csuButton(\.style, .text)
                             .csuButton(\.isLoading, true)
@@ -217,6 +223,11 @@ struct CSUButton_Preview: View {
                     
                     HStack {
                         CSUButton(title: "Text") { }
+                            .csuButton(\.style, .text)
+                            .disabled(true)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        CSUButton(image: Image(systemName: "bookmark.fill")) { }
                             .csuButton(\.style, .text)
                             .disabled(true)
                             .fixedSize(horizontal: false, vertical: true)
@@ -237,6 +248,10 @@ struct CSUButton_Preview: View {
                             .csuButton(\.style, .fill)
                             .fixedSize(horizontal: false, vertical: true)
                         
+                        CSUButton(image: Image(systemName: "bookmark.fill")) { }
+                            .csuButton(\.style, .fill)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
                         CSUButton(title: "Fill") { }
                             .csuButton(\.style, .fill)
                             .csuButton(\.isLoading, true)
@@ -245,6 +260,11 @@ struct CSUButton_Preview: View {
                     
                     HStack {
                         CSUButton(title: "Fill") { }
+                            .csuButton(\.style, .fill)
+                            .disabled(true)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        CSUButton(image: Image(systemName: "bookmark.fill")) { }
                             .csuButton(\.style, .fill)
                             .disabled(true)
                             .fixedSize(horizontal: false, vertical: true)
@@ -264,6 +284,10 @@ struct CSUButton_Preview: View {
                             .csuButton(\.style, .line)
                             .fixedSize(horizontal: false, vertical: true)
                         
+                        CSUButton(image: Image(systemName: "bookmark.fill")) { }
+                            .csuButton(\.style, .line)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
                         CSUButton(title: "Line") { }
                             .csuButton(\.style, .line)
                             .csuButton(\.isLoading, true)
@@ -272,6 +296,11 @@ struct CSUButton_Preview: View {
                     
                     HStack {
                         CSUButton(title: "Line") { }
+                            .csuButton(\.style, .line)
+                            .disabled(true)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                        CSUButton(image: Image(systemName: "bookmark.fill")) { }
                             .csuButton(\.style, .line)
                             .disabled(true)
                             .fixedSize(horizontal: false, vertical: true)
@@ -289,22 +318,22 @@ struct CSUButton_Preview: View {
                         .font(Font(R.Font.font(ofSize: 14, weight: .light)))
                     HStack {
                         Spacer()
-                        
+
                         CSUButton(title: "Fixed") { }
                             .fixedSize()
-                        
+
                         CSUButton(title: "Fixed") { }
                             .csuButton(\.style, .fill)
                             .fixedSize()
-                        
+
                         CSUButton(title: "Fixed") { }
                             .csuButton(\.style, .line)
                             .fixedSize()
-                        
+
                         CSUButton(title: "Fixed") { }
                             .csuButton(\.style, .text)
                             .fixedSize()
-                        
+
                         Spacer()
                     }
                 }
@@ -319,10 +348,15 @@ struct CSUButton_Preview: View {
                             .csuButton(\.cornerRadius, 26)
                             .fixedSize()
                         
-                        CSUButton(title: "Custom") { }
+                        CSUButton(title: "Cus") { }
                             .csuButton(\.contentInsets, .init(.zero))
                             .csuButton(\.backgroundColor, .blue)
-                            .csuButton(\.font, Font(R.Font.font(ofSize: 48, weight: .regular)))
+                            .csuButton(\.font, Font(R.Font.font(ofSize: 70, weight: .regular)))
+                            .fixedSize()
+                        CSUButton(title: "tom") { }
+                            .csuButton(\.contentInsets, .init(.zero))
+                            .csuButton(\.backgroundColor, .blue)
+                            .csuButton(\.font, Font(R.Font.font(ofSize: 8, weight: .regular)))
                             .fixedSize()
                     }
                 }

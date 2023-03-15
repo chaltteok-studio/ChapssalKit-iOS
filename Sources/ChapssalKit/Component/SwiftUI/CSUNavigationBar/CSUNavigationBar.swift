@@ -51,10 +51,9 @@ public struct CSUNavigationBar: View {
                 RightAccessoryContainer()
                     .layoutPriority(1)
             }
-                .padding(.horizontal, 16)
+                .padding(16)
                 .frame(
                     maxWidth: .infinity,
-                    minHeight: 56,
                     maxHeight: .infinity
                 )
                 .background(config.backgroundColor)
@@ -222,6 +221,7 @@ struct CSUNavigationBar_Preview: View {
 struct CSUNavigationBar_Previews: PreviewProvider {
     static var previews: some View {
         CSUNavigationBar_Preview()
+            .previewLayout(.sizeThatFits)
     }
 }
 #endif
