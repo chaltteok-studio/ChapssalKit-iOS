@@ -180,7 +180,7 @@ public struct CSUTextField: View {
         
         @ViewBuilder
         private func TextField() -> some View {
-            UITextFieldView(placeholder, text: $text)
+            SUTextField(placeholder, text: $text)
                 .textColor(config.textColor)
                 .placeholderColor(config.placeholderColor)
                 .tintColor(config.tintColor)

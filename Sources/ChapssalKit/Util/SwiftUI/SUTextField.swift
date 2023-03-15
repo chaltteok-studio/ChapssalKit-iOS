@@ -1,5 +1,5 @@
 //
-//  UITextFieldView.swift
+//  SUTextField.swift
 //  
 //
 //  Created by JSilver on 2023/02/21.
@@ -10,7 +10,7 @@ import SwiftUI
 import Compose
 import Validator
 
-public struct UITextFieldView: UIViewRepresentable {
+public struct SUTextField: UIViewRepresentable {
     public final class Coordinator: NSObject, UITextFieldDelegate {
         // MARK: - Property
         var validator: (any Validator<String>)?
@@ -39,7 +39,7 @@ public struct UITextFieldView: UIViewRepresentable {
             guard let newString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) else { return true }
             
             guard !newString.isEmpty else {
-                // Empty string alway true.
+                // Empty string always true.
                 return true
             }
             
@@ -87,10 +87,13 @@ public struct UITextFieldView: UIViewRepresentable {
     }
     
     // MARK: - Property
+    @Binding
+    public var text: String
     public var placeholder: String?
-    public var placeholderColor: UIColor?
-    public var textColor: UIColor?
+    
     public var tintColor: UIColor?
+    public var textColor: UIColor?
+    public var placeholderColor: UIColor?
     public var font: UIFont?
     
     public var isSecureTextEntry: Bool = false
@@ -106,12 +109,10 @@ public struct UITextFieldView: UIViewRepresentable {
     
     public var validator: (any Validator<String>)?
     
-    public var isEditing: Binding<Bool>?
+    @OptionalState
+    public var isEditing: Bool = false
     
     public var onReturn: (() -> Void)?
-    
-    @Binding
-    public var text: String
     
     // MARK: - Initializer
     public init(_ placeholder: String? = nil, text: Binding<String>) {
@@ -147,8 +148,9 @@ public struct UITextFieldView: UIViewRepresentable {
                 ]
             )
         }
-        uiView.textColor = textColor
+        
         uiView.tintColor = tintColor
+        uiView.textColor = textColor
         uiView.font = font
         
         uiView.isSecureTextEntry = isSecureTextEntry
@@ -168,11 +170,11 @@ public struct UITextFieldView: UIViewRepresentable {
         context.coordinator.validator = validator
         context.coordinator.onReturn = onReturn
         
-        if (isEditing?.wrappedValue ?? false) && !uiView.isFirstResponder {
+        if isEditing && !uiView.isFirstResponder {
             Task {
                 uiView.becomeFirstResponder()
             }
-        } else if !(isEditing?.wrappedValue ?? false) && uiView.isFirstResponder {
+        } else if !isEditing && uiView.isFirstResponder {
             Task {
                 uiView.resignFirstResponder()
             }
@@ -180,10 +182,16 @@ public struct UITextFieldView: UIViewRepresentable {
     }
     
     public func makeCoordinator() -> Coordinator {
-        Coordinator(isEditing: isEditing)
+        Coordinator(isEditing: $isEditing)
     }
     
     // MARK: - Public
+    public func tintColor(_ color: UIColor?) -> Self {
+        var view = self
+        view.tintColor = color
+        return view
+    }
+    
     public func textColor(_ color: UIColor?) -> Self {
         var view = self
         view.textColor = color
@@ -193,12 +201,6 @@ public struct UITextFieldView: UIViewRepresentable {
     public func placeholderColor(_ color: UIColor?) -> Self {
         var view = self
         view.placeholderColor = color
-        return view
-    }
-    
-    public func tintColor(_ color: UIColor?) -> Self {
-        var view = self
-        view.tintColor = color
         return view
     }
     
@@ -266,7 +268,7 @@ public struct UITextFieldView: UIViewRepresentable {
     
     public func editing(_ isEditing: Binding<Bool>) -> Self {
         var view = self
-        view.isEditing = isEditing
+        view._isEditing.bind(isEditing)
         return view
     }
     
