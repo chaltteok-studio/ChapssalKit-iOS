@@ -19,12 +19,12 @@ public extension CSUTextFieldStyle where Self == CSUPlainTextFieldStyle {
 }
 
 public extension CSUTextFieldStyle {
-    static func inputBox(state: any CSUInputBoxState = CSUInputBoxStyle.State.normal) -> Self where Self == CSUInputBoxStyle {
-        CSUInputBoxStyle(state: state)
+    static func boxInput(state: any CSUBoxInputState = CSUBoxInputStyle.State.normal) -> Self where Self == CSUBoxInputStyle {
+        CSUBoxInputStyle(state: state)
     }
     
-    static func inputLine(state: any CSUInputLineState = CSUInputLineStyle.State.normal) -> Self where Self == CSUInputLineStyle {
-        CSUInputLineStyle(state: state)
+    static func lineInput(state: any CSULineInputState = CSULineInputStyle.State.normal) -> Self where Self == CSULineInputStyle {
+        CSULineInputStyle(state: state)
     }
 }
 

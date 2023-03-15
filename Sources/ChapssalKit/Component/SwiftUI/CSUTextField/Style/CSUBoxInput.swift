@@ -1,5 +1,5 @@
 //
-//  CSUInputBoxStyle.swift
+//  CSUBoxInputStyle.swift
 //  
 //
 //  Created by JSilver on 2023/02/23.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-public protocol CSUInputBoxState {
+public protocol CSUBoxInputState {
     var textColor: UIColor { get }
     var tintColor: UIColor { get }
     var backgroundColor: UIColor { get }
     var borderColor: UIColor { get }
 }
 
-public struct CSUInputBoxStyle: CSUTextFieldStyle {
-    public enum State: CSUInputBoxState, CaseIterable {
+public struct CSUBoxInputStyle: CSUTextFieldStyle {
+    public enum State: CSUBoxInputState, CaseIterable {
         case normal
         case error
         
@@ -63,7 +63,7 @@ public struct CSUInputBoxStyle: CSUTextFieldStyle {
         
         // MARK: - Property
         let configuration: CSUTextFieldStyleConfiguration
-        let state: any CSUInputBoxState
+        let state: any CSUBoxInputState
         
         @Environment(\.isEnabled)
         var isEnabled: Bool
@@ -72,15 +72,15 @@ public struct CSUInputBoxStyle: CSUTextFieldStyle {
         var config: CSUTextField.Configuration
         
         // MARK: - Initializer
-        init(_ configuration: Configuration, state: any CSUInputBoxState) {
+        init(_ configuration: Configuration, state: any CSUBoxInputState) {
             self.configuration = configuration
             self.state = state
         }
     }
     
-    public var state: any CSUInputBoxState
+    public var state: any CSUBoxInputState
     
-    public init(state: any CSUInputBoxState) {
+    public init(state: any CSUBoxInputState) {
         self.state = state
     }
     
@@ -90,14 +90,14 @@ public struct CSUInputBoxStyle: CSUTextFieldStyle {
 }
 
 #if DEBUG
-struct CSUInputBox_Preview: View {
+struct CSUBoxInput_Preview: View {
     @State
     var text: String = ""
     @State
     var focus: Bool = false
     
     @State
-    var state: CSUInputBoxStyle.State = .normal
+    var state: CSUBoxInputStyle.State = .normal
     @State
     var secureTextEntryMode: CSUTextField.SecureTextEntryMode = .never
     
@@ -123,7 +123,7 @@ struct CSUInputBox_Preview: View {
                 }
                 
                 Picker("State", selection: $state) {
-                    ForEach(CSUInputBoxStyle.State.allCases, id: \.self) { state in
+                    ForEach(CSUBoxInputStyle.State.allCases, id: \.self) { state in
                         switch state {
                         case .normal:
                             Text("Normal")
@@ -141,7 +141,7 @@ struct CSUInputBox_Preview: View {
                     "input",
                     text: $text
                 )
-                    .csuTextField(\.style, .inputBox(state: state))
+                    .csuTextField(\.style, .boxInput(state: state))
                     .csuTextField(\.isEditing, $focus)
                     .csuTextField(\.secureTextEntryMode, secureTextEntryMode)
                     .fixedSize(horizontal: false, vertical: true)
@@ -157,9 +157,9 @@ struct CSUInputBox_Preview: View {
     }
 }
 
-struct CSUInputBox_Previews: PreviewProvider {
+struct CSUBoxInput_Previews: PreviewProvider {
     static var previews: some View {
-        CSUInputBox_Preview()
+        CSUBoxInput_Preview()
             .previewLayout(.sizeThatFits)
     }
 }

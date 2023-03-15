@@ -1,5 +1,5 @@
 //
-//  CSUInputLineStyle.swift
+//  CSULineInputStyle.swift
 //
 //
 //  Created by JSilver on 2023/02/23.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-public protocol CSUInputLineState {
+public protocol CSULineInputState {
     var textColor: UIColor { get }
     var tintColor: UIColor { get }
     var backgroundColor: UIColor { get }
     var borderColor: UIColor { get }
 }
 
-public struct CSUInputLineStyle: CSUTextFieldStyle {
-    public enum State: CSUInputLineState, CaseIterable {
+public struct CSULineInputStyle: CSUTextFieldStyle {
+    public enum State: CSULineInputState, CaseIterable {
         case normal
         case error
         
@@ -63,7 +63,7 @@ public struct CSUInputLineStyle: CSUTextFieldStyle {
         
         // MARK: - Property
         let configuration: CSUTextFieldStyleConfiguration
-        let state: any CSUInputLineState
+        let state: any CSULineInputState
         
         @Environment(\.isEnabled)
         var isEnabled: Bool
@@ -72,15 +72,15 @@ public struct CSUInputLineStyle: CSUTextFieldStyle {
         var config: CSUTextField.Configuration
         
         // MARK: - Initializer
-        init(_ configuration: Configuration, state: any CSUInputLineState) {
+        init(_ configuration: Configuration, state: any CSULineInputState) {
             self.configuration = configuration
             self.state = state
         }
     }
     
-    public var state: any CSUInputLineState
+    public var state: any CSULineInputState
     
-    public init(state: any CSUInputLineState) {
+    public init(state: any CSULineInputState) {
         self.state = state
     }
     
@@ -90,14 +90,14 @@ public struct CSUInputLineStyle: CSUTextFieldStyle {
 }
 
 #if DEBUG
-struct CSUInputLine_Preview: View {
+struct CSULineInput_Preview: View {
     @State
     var text: String = ""
     @State
     var focus: Bool = false
     
     @State
-    var state: CSUInputLineStyle.State = .normal
+    var state: CSULineInputStyle.State = .normal
     @State
     var secureTextEntryMode: CSUTextField.SecureTextEntryMode = .never
     
@@ -123,7 +123,7 @@ struct CSUInputLine_Preview: View {
                 }
                 
                 Picker("State", selection: $state) {
-                    ForEach(CSUInputLineStyle.State.allCases, id: \.self) { state in
+                    ForEach(CSULineInputStyle.State.allCases, id: \.self) { state in
                         switch state {
                         case .normal:
                             Text("Normal")
@@ -141,7 +141,7 @@ struct CSUInputLine_Preview: View {
                     "input",
                     text: $text
                 )
-                    .csuTextField(\.style, .inputLine(state: state))
+                    .csuTextField(\.style, .lineInput(state: state))
                     .csuTextField(\.isEditing, $focus)
                     .csuTextField(\.secureTextEntryMode, secureTextEntryMode)
                     .fixedSize(horizontal: false, vertical: true)
@@ -157,9 +157,9 @@ struct CSUInputLine_Preview: View {
     }
 }
 
-struct CSUInputLine_Previews: PreviewProvider {
+struct CSULineInput_Previews: PreviewProvider {
     static var previews: some View {
-        CSUInputLine_Preview()
+        CSULineInput_Preview()
             .previewLayout(.sizeThatFits)
     }
 }
