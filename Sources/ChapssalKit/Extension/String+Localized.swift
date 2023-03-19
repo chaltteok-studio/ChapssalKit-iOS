@@ -9,6 +9,6 @@ import Foundation
 
 public extension String {
     func localized(in bundle: Bundle? = nil) -> String {
-        NSLocalizedString(self, bundle: bundle ?? .module, comment: "")
+        NSLocalizedString(self, bundle: bundle ?? .module, value: "unknown", comment: "")
     }
 }
