@@ -66,7 +66,7 @@ public struct CSUPlainButtonStyle: CSUButtonStyle {
         }
         
         // MARK: - Property
-        let configuration: CSUButtonStyleConfiguration
+        private let configuration: CSUButtonStyleConfiguration
         
         // MARK: - Initlalizer
         init(_ configuration: Configuration) {

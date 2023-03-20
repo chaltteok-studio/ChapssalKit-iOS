@@ -62,14 +62,14 @@ public struct CSULineInputStyle: CSUTextFieldStyle {
         }
         
         // MARK: - Property
-        let configuration: CSUTextFieldStyleConfiguration
-        let state: any CSULineInputState
+        private let configuration: CSUTextFieldStyleConfiguration
+        private let state: any CSULineInputState
         
         @Environment(\.isEnabled)
-        var isEnabled: Bool
+        private var isEnabled: Bool
         
         @Environment(\.csuTextField)
-        var config: CSUTextField.Configuration
+        private var config: CSUTextField.Configuration
         
         // MARK: - Initializer
         init(_ configuration: Configuration, state: any CSULineInputState) {
@@ -78,7 +78,7 @@ public struct CSULineInputStyle: CSUTextFieldStyle {
         }
     }
     
-    public var state: any CSULineInputState
+    private var state: any CSULineInputState
     
     public init(state: any CSULineInputState) {
         self.state = state

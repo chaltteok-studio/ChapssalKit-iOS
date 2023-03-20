@@ -160,8 +160,8 @@ public struct CSUNavigationBar: View {
         }
         
         // MARK: - Property
-        var title: String
-        var alignment: Alignment
+        private let title: String
+        private let alignment: Alignment
         
         @State
         private var leftAccessoriesWidth: CGFloat = 0
@@ -172,6 +172,13 @@ public struct CSUNavigationBar: View {
         private var config: Configuration
         
         // MARK: - Initialier
+        init(
+            title: String,
+            alignment: Alignment
+        ) {
+            self.title = title
+            self.alignment = alignment
+        }
         
         // MARK: - Public
         
@@ -193,8 +200,8 @@ public struct CSUNavigationBar: View {
     }
     
     // MARK: - Property
-    public var title: String
-    public var alignment: Alignment
+    private let title: String
+    private let alignment: Alignment
     
     @Environment(\.csuNavigationBar.style)
     private var style: any CSUNavigationBarStyle

@@ -44,13 +44,13 @@ public struct CSULineButtonStyle: CSUButtonStyle {
         }
         
         // MARK: - Property
-        let configuration: CSUButtonStyleConfiguration
+        private let configuration: CSUButtonStyleConfiguration
         
         @Environment(\.isEnabled)
-        var isEnabled: Bool
+        private var isEnabled: Bool
         
         @Environment(\.csuButton)
-        var config: CSUButton.Configuration
+        private var config: CSUButton.Configuration
         
         // MARK: - Initializer
         init(_ configuration: Configuration) {

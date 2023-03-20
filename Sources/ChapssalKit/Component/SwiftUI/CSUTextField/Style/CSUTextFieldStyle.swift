@@ -63,7 +63,7 @@ public struct CSUPlainTextFieldStyle: CSUTextFieldStyle {
         }
         
         // MARK: - Property
-        let configuration: CSUTextFieldStyleConfiguration
+        private let configuration: CSUTextFieldStyleConfiguration
         
         // MARK: - Initlalizer
         init(_ configuration: Configuration) {

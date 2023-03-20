@@ -130,11 +130,11 @@ public struct CSUImageLabel: View {
     }
     
     // MARK: - Property
-    public var text: String?
-    public var image: Image?
-    public var spacing: CGFloat
-    public var direction: Direction
-    public var alignment: Alignment
+    private let text: String?
+    private let image: Image?
+    private let spacing: CGFloat
+    private let direction: Direction
+    private let alignment: Alignment
     
     @Environment(\.csuImageLabel)
     private var config: Configuration

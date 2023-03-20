@@ -109,20 +109,35 @@ public struct CSUButton: View {
         }
         
         // MARK: - Property
-        var title: String?
-        var image: Image?
-        var spacing: CGFloat
-        var direction: CSUImageLabel.Direction
+        private let title: String?
+        private let image: Image?
+        private let spacing: CGFloat
+        private let direction: CSUImageLabel.Direction
         
         @Binding
         var isHighlight: Bool
         
-        var action: () -> Void
+        private let action: () -> Void
         
         @Environment(\.csuButton)
         private var config: CSUButton.Configuration
         
         // MARK: - Initializer
+        init(
+            title: String?,
+            image: Image?,
+            spacing: CGFloat,
+            direction: CSUImageLabel.Direction,
+            isHighlight: Binding<Bool>,
+            action: @escaping () -> Void
+        ) {
+            self.title = title
+            self.image = image
+            self.spacing = spacing
+            self.direction = direction
+            self._isHighlight = isHighlight
+            self.action = action
+        }
         
         // MARK: - Public
         
@@ -149,15 +164,15 @@ public struct CSUButton: View {
     }
     
     // MARK: - Property
-    public var title: String?
-    public var image: Image?
-    public var spacing: CGFloat
-    public var direction: CSUImageLabel.Direction
+    private let title: String?
+    private let image: Image?
+    private let spacing: CGFloat
+    private let direction: CSUImageLabel.Direction
     
     @State
     private var isHighlight: Bool = false
     
-    public var action: () -> Void
+    private var action: () -> Void
     
     @Environment(\.csuButton.style)
     private var style: any CSUButtonStyle

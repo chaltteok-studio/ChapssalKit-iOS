@@ -158,16 +158,25 @@ public struct CSUTextView: View {
         
         // MARK: - Property
         @Binding
-        var text: String
-        var placeholder: String
+        private var text: String
+        private let placeholder: String
         
         @Binding
-        var isEditing: Bool
+        private var isEditing: Bool
         
         @Environment(\.csuTextView)
-        var config: Configuration
+        private var config: Configuration
         
         // MARK: - Initializer
+        init(
+            text: Binding<String>,
+            placeholder: String,
+            isEditing: Binding<Bool>
+        ) {
+            self._text = text
+            self.placeholder = placeholder
+            self._isEditing = isEditing
+        }
         
         // MARK: - Public
         
@@ -192,7 +201,7 @@ public struct CSUTextView: View {
     // MARK: - Property
     @Binding
     private var text: String
-    public var placeholder: String
+    private let placeholder: String
     
     @Environment(\.csuTextView.style)
     private var style: any CSUTextViewStyle

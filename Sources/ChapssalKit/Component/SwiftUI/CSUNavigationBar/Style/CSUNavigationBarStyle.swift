@@ -53,7 +53,7 @@ public struct CSUPlainNavigationBarStyle: CSUNavigationBarStyle {
         }
         
         // MARK: - Property
-        let configuration: CSUNavigationBarStyleConfiguration
+        private let configuration: CSUNavigationBarStyleConfiguration
         
         // MARK: - Initlalizer
         init(_ configuration: Configuration) {

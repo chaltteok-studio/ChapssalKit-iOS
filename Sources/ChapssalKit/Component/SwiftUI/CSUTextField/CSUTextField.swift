@@ -259,18 +259,29 @@ public struct CSUTextField: View {
         
         // MARK: - Property
         @Binding
-        var text: String
-        var placeholder: String
+        private var text: String
+        private let placeholder: String
         
         @Binding
-        var isSecureTextEntry: Bool
+        private var isSecureTextEntry: Bool
         @Binding
-        var isEditing: Bool
+        private var isEditing: Bool
         
         @Environment(\.csuTextField)
         private var config: Configuration
         
         // MARK: - Initializer
+        init(
+            text: Binding<String>,
+            placeholder: String,
+            isSecureTextEntry: Binding<Bool>,
+            isEditing: Binding<Bool>
+        ) {
+            self._text = text
+            self.placeholder = placeholder
+            self._isSecureTextEntry = isSecureTextEntry
+            self._isEditing = isEditing
+        }
         
         // MARK: - Public
         
@@ -296,7 +307,7 @@ public struct CSUTextField: View {
     // MARK: - Property
     @Binding
     private var text: String
-    public var placeholder: String
+    private let placeholder: String
     
     @Environment(\.csuTextField.style)
     private var style: any CSUTextFieldStyle

@@ -57,7 +57,7 @@ public struct CSUPlainTextViewStyle: CSUTextViewStyle {
         }
         
         // MARK: - Property
-        let configuration: CSUTextViewStyleConfiguration
+        private let configuration: CSUTextViewStyleConfiguration
         
         // MARK: - Initlalizer
         init(_ configuration: Configuration) {
