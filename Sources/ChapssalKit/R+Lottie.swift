@@ -1,5 +1,5 @@
 //
-//  Resource+Lottie.swift
+//  R+Lottie.swift
 //  
 //
 //  Created by JSilver on 2021/10/11.

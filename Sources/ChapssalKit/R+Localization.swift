@@ -1,5 +1,5 @@
 //
-//  Resource+Localization.swift
+//  R+Localization.swift
 //  
 //
 //  Created by JSilver on 2021/06/06.
