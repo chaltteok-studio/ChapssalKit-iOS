@@ -18,6 +18,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/wlsdms0122/Compose.git", .upToNextMajor(from: "1.2.1")),
         .package(url: "https://github.com/wlsdms0122/Validator.git", .upToNextMajor(from: "1.0.3")),
+        .package(url: "https://github.com/wlsdms0122/JSToast.git", .upToNextMajor(from: "2.4.1")),
         .package(url: "https://github.com/airbnb/lottie-ios.git", .upToNextMajor(from: "4.1.2"))
     ],
     targets: [
@@ -26,6 +27,7 @@ let package = Package(
             dependencies: [
                 "Compose",
                 "Validator",
+                "JSToast",
                 .product(
                     name: "Lottie",
                     package: "lottie-ios"
