@@ -81,60 +81,64 @@ struct AlertViewModifier<Data, Alert: View>: ViewModifier {
     func body(content: Content) -> some View {
         content.background(
             ToastContainer { layer in
-                GeometryReader { reader in
-                    let frame = reader.frame(in: .global)
-                    
-                    if let scene = layer.window?.windowScene {
-                        let queue = AlertQueue.queue(scene: scene)
-                        
-                        Color.clear
-                            .toast(
-                                $isShow,
-                                duration: duration,
-                                layouts: [
-                                    .inside(.top),
-                                    .inside(.trailing),
-                                    .inside(.bottom),
-                                    .inside(.leading)
-                                ],
-                                showAnimation: .fadeIn(duration: 0.2),
-                                hideAnimation: .fadeOut(duration: 0.2),
-                                hidden: { _ in
-                                    queue.check()
-                                }
-                            ) {
-                                if let data = queue.item?.data as? Data {
-                                    var completion: (() -> Void)?
-                                    
-                                    alert(data) {
-                                        completion = $0
-                                        
-                                        queue.remove()
-                                        queue.reset()
-                                    }
-                                        .onDisappear {
-                                            completion?()
-                                        }
-                                }
-                            }
-                            .offset(
-                                x: -frame.minX,
-                                y: -frame.minY
-                            )
-                            .subscribe(queue.$item) { item in
-                                guard item?.id == id else {
-                                    isShow = false
-                                    return
-                                }
+                Group {
+                    if let screen = layer.window?.screen {
+                        GeometryReader { reader in
+                            let frame = reader.frame(in: .global)
+                            
+                            if let scene = layer.window?.windowScene {
+                                let queue = AlertQueue.queue(scene: scene)
                                 
-                                isShow = (item?.data as? Data) != nil
+                                Color.clear
+                                    .toast(
+                                        $isShow,
+                                        duration: duration,
+                                        layouts: [
+                                            .inside(.top),
+                                            .inside(.trailing),
+                                            .inside(.bottom),
+                                            .inside(.leading)
+                                        ],
+                                        showAnimation: .fadeIn(duration: 0.2),
+                                        hideAnimation: .fadeOut(duration: 0.2),
+                                        hidden: { _ in
+                                            queue.check()
+                                        }
+                                    ) {
+                                        if let data = queue.item?.data as? Data {
+                                            var completion: (() -> Void)?
+                                            
+                                            alert(data) {
+                                                completion = $0
+                                                
+                                                queue.remove()
+                                                queue.reset()
+                                            }
+                                                .onDisappear {
+                                                    completion?()
+                                                }
+                                        }
+                                    }
+                                        .offset(
+                                            x: -frame.minX,
+                                            y: -frame.minY
+                                        )
+                                        .subscribe(queue.$item) { item in
+                                            guard item?.id == id else {
+                                                isShow = false
+                                                return
+                                            }
+                                            
+                                            isShow = (item?.data as? Data) != nil
+                                    }
                             }
+                        }
+                            .frame(
+                                width: screen.bounds.width,
+                                height: screen.bounds.height
+                            )
                     }
                 }
-                    .frame(
-                        width: layer.window?.screen.bounds.width ?? 1000,
-                        height: layer.window?.screen.bounds.height ?? 1000
-                    )
                     .subscribe(publisher) { data in
                         let queue = AlertQueue.queue(scene: layer.window?.windowScene)
                         
