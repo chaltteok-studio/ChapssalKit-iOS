@@ -8,25 +8,48 @@
 import SwiftUI
 import Combine
 import JSToast
+import Logger
 
-final class AlertQueue<Data>: ObservableObject {
+final class AlertQueue: ObservableObject {
     // MARK: - Property
-    @Published
-    var data: Data?
+    private static var queues: [UIWindowScene?: AlertQueue] = [:]
+    static func queue(scene: UIWindowScene?) -> AlertQueue {
+        guard let queue = queues[scene] else {
+            let queue = AlertQueue()
+            queues[scene] = queue
+            return queue
+        }
+        
+        return queue
+    }
     
-    private var queue: [Data] = []
+    @Published
+    private(set) var item: (id: Namespace.ID, data: Any)?
+    
+    var isEmpty: Bool { queue.isEmpty }
+    
+    private var queue: [(Namespace.ID, Any)] = []
+    private var deferredRemove: Bool = false
     
     // MARK: - Initializer
+    private init() { }
     
     // MARK: - Public
-    func insert(_ data: Data) {
-        queue.insert(data, at: 0)
-        self.data = data
+    func insert(_ data: Any, for id: Namespace.ID) {
+        queue.append((id, data))
     }
     
     func remove() {
-        queue.removeFirst()
-        data = queue.first
+        guard !queue.isEmpty else { return }
+        queue.removeLast()
+    }
+    
+    func reset() {
+        item = nil
+    }
+    
+    func check() {
+        item = queue.last
     }
     
     // MARK: - Private
@@ -36,18 +59,10 @@ struct AlertViewModifier<Data, Alert: View>: ViewModifier {
     // MARK: - Property
     private let publisher: AnyPublisher<Data, Never>
     private let duration: TimeInterval?
-    private let alert: (Data, _ dismiss: @escaping () -> Void) -> Alert
+    private let alert: (Data, _ dismiss: @escaping ((() -> Void)?) -> Void) -> Alert
     
-    private var currentWindow: UIWindow? {
-        let windowScene = UIApplication.shared.connectedScenes
-            .compactMap { ($0 as? UIWindowScene) }
-            .first { $0.activationState == .foregroundActive }
-        
-        return windowScene?.keyWindow
-    }
-    
-    @StateObject
-    private var queue: AlertQueue<Data> = AlertQueue()
+    @Namespace
+    private var id: Namespace.ID
     @State
     private var isShow: Bool = false
     
@@ -55,7 +70,7 @@ struct AlertViewModifier<Data, Alert: View>: ViewModifier {
     init<P: Publisher>(
         _ publisher: P,
         duration: TimeInterval? = nil,
-        @ViewBuilder alert: @escaping (Data, _ dismiss: @escaping () -> Void) -> Alert
+        @ViewBuilder alert: @escaping (Data, _ dismiss: @escaping ((() -> Void)?) -> Void) -> Alert
     ) where P.Output == Data, P.Failure == Never {
         self.publisher = publisher.eraseToAnyPublisher()
         self.duration = duration
@@ -65,51 +80,76 @@ struct AlertViewModifier<Data, Alert: View>: ViewModifier {
     // MARK: - Lifecycle
     func body(content: Content) -> some View {
         content.background(
-            GeometryReader { reader in
-                let safeAreaInsets = reader.safeAreaInsets
-                
-                Color.clear
-                    .toast(
-                        $isShow,
-                        duration: duration,
-                        layouts: [
-                            .inside(of: .top),
-                            .inside(of: .trailing),
-                            .inside(of: .bottom),
-                            .inside(of: .leading)
-                        ],
-                        showAnimation: .fadeIn(duration: 0.2),
-                        hideAnimation: .fadeOut(duration: 0.2),
-                        hidden: { _ in
-                            isShow = queue.data != nil
-                        }
-                    ) {
-                        if let data = queue.data {
-                            alert(data) {
-                                isShow = false
-                                queue.remove()
+            ToastContainer { layer in
+                GeometryReader { reader in
+                    let frame = reader.frame(in: .global)
+                    
+                    if let scene = layer.window?.windowScene {
+                        let queue = AlertQueue.queue(scene: scene)
+                        
+                        Color.clear
+                            .toast(
+                                $isShow,
+                                duration: duration,
+                                layouts: [
+                                    .inside(.top),
+                                    .inside(.trailing),
+                                    .inside(.bottom),
+                                    .inside(.leading)
+                                ],
+                                showAnimation: .fadeIn(duration: 0.2),
+                                hideAnimation: .fadeOut(duration: 0.2),
+                                hidden: { _ in
+                                    queue.check()
+                                }
+                            ) {
+                                if let data = queue.item?.data as? Data {
+                                    var completion: (() -> Void)?
+                                    
+                                    alert(data) {
+                                        completion = $0
+                                        
+                                        queue.remove()
+                                        queue.reset()
+                                    }
+                                        .onDisappear {
+                                            completion?()
+                                        }
+                                }
+                            }
+                            .offset(
+                                x: -frame.minX,
+                                y: -frame.minY
+                            )
+                            .subscribe(queue.$item) { item in
+                                guard item?.id == id else {
+                                    isShow = false
+                                    return
+                                }
+                                
+                                isShow = (item?.data as? Data) != nil
+                            }
+                    }
+                }
+                    .frame(
+                        width: layer.window?.screen.bounds.width ?? 1000,
+                        height: layer.window?.screen.bounds.height ?? 1000
+                    )
+                    .subscribe(publisher) { data in
+                        let queue = AlertQueue.queue(scene: layer.window?.windowScene)
+                        
+                        Task {
+                            if queue.isEmpty {
+                                queue.insert(data, for: id)
+                                queue.check()
+                            } else {
+                                queue.insert(data, for: id)
+                                queue.reset()
                             }
                         }
                     }
-                        .offset(
-                            x: safeAreaInsets.trailing - safeAreaInsets.leading,
-                            y: safeAreaInsets.bottom - safeAreaInsets.top
-                        )
             }
-                .frame(
-                    width: currentWindow?.bounds.width ?? 0,
-                    height: currentWindow?.bounds.height ?? 0
-                )
-                
         )
-            .subscribe(publisher) { data in
-                Task {
-                    let currentData = queue.data
-                    isShow = currentData == nil
-                    
-                    queue.insert(data)
-                }
-            }
     }
     
     // MARK: - Public
@@ -125,7 +165,7 @@ public extension View {
     >(
         _ publisher: P,
         duration: TimeInterval? = nil,
-        @ViewBuilder alert: @escaping (Data, _ dismiss: @escaping () -> Void) -> Alert
+        @ViewBuilder alert: @escaping (Data, _ dismiss: @escaping ((() -> Void)?) -> Void) -> Alert
     ) -> some View where P.Output == Data, P.Failure == Never {
         modifier(AlertViewModifier(
             publisher,
@@ -138,55 +178,91 @@ public extension View {
 #if DEBUG
 struct AlertViewModifier_Preview: View {
     var body: some View {
-        ZStack {
-            Button("Show Alert") {
-                alert.send(Void())
-            }
-                .buttonStyle(.borderedProminent)
-        }
-        .alert(alert) { _, dismiss in
-            ZStack {
-                Color.black.opacity(0.6)
-                
-                VStack(spacing: 12) {
-                    Text("Confirm Deletion")
-                        .padding(6)
-                        .font(Font(R.Font.font(ofSize: 20, weight: .medium)))
-                        .foregroundColor(Color(uiColor: R.Color.gray01))
-                    Text("Deleted data cannot be recovere.\nContinue?")
-                        .multilineTextAlignment(.center)
-                        .font(Font(R.Font.font(ofSize: 14, weight: .regular)))
-                        .foregroundColor(Color(uiColor: R.Color.gray02))
-                    HStack(spacing: 8) {
-                        Button {
-                            dismiss()
-                            /* Pefrom delete action */
-                        } label: {
-                            Text("Yes, Delete")
-                                .font(Font(R.Font.font(ofSize: 16, weight: .medium)))
-                                .foregroundColor(Color(uiColor: R.Color.gray04))
-                                .frame(maxWidth: .infinity)
+        GeometryReader { reader in
+            ScrollView(.horizontal) {
+                HStack {
+                    ZStack {
+                        Button("Show Alert") {
+                            alert.send(Void())
                         }
-                        Button {
-                            dismiss()
-                        } label: {
-                            Text("No, Cancel")
-                                .font(Font(R.Font.font(ofSize: 16, weight: .medium)))
-                                .foregroundColor(Color(uiColor: R.Color.green01))
-                                .frame(maxWidth: .infinity)
-                        }
+                            .buttonStyle(.borderedProminent)
+                            .fixedSize()
+                            .alert(countAlert) { count, dismiss in
+                                ZStack {
+                                    Color.black.opacity(0.6)
+                                    VStack {
+                                        Text("Count Alert \(count)")
+                                        Button("dismiss") {
+                                            dismiss(nil)
+                                        }
+                                        .buttonStyle(.borderedProminent)
+                                    }
+                                    .background(Color.white)
+                                }
+                            }
+                            .alert(alert) { _, dismiss in
+                                ZStack {
+                                    Color.black.opacity(0.6)
+                                    
+                                    VStack(spacing: 12) {
+                                        Text("Confirm Deletion")
+                                            .padding(6)
+                                            .font(Font(R.Font.font(ofSize: 20, weight: .medium)))
+                                            .foregroundColor(Color(uiColor: R.Color.gray01))
+                                        Text("Deleted data cannot be recovere.\nContinue?")
+                                            .multilineTextAlignment(.center)
+                                            .font(Font(R.Font.font(ofSize: 14, weight: .regular)))
+                                            .foregroundColor(Color(uiColor: R.Color.gray02))
+                                        HStack(spacing: 8) {
+                                            Button {
+                                                dismiss(nil)
+                                                /* Pefrom delete action */
+                                            } label: {
+                                                Text("Yes, Delete")
+                                                    .font(Font(R.Font.font(ofSize: 16, weight: .medium)))
+                                                    .foregroundColor(Color(uiColor: R.Color.gray04))
+                                                    .frame(maxWidth: .infinity)
+                                            }
+                                            Button {
+                                                dismiss {
+                                                    print("A")
+                                                }
+                                            } label: {
+                                                Text("No, Cancel")
+                                                    .font(Font(R.Font.font(ofSize: 16, weight: .medium)))
+                                                    .foregroundColor(Color(uiColor: R.Color.green01))
+                                                    .frame(maxWidth: .infinity)
+                                            }
+                                        }
+                                        .padding(.vertical, 14)
+                                    }
+                                    .frame(width: 247)
+                                    .padding(16)
+                                    .background(Color(uiColor: R.Color.white))
+                                    .cornerRadius(10)
+                                }
+                            }
                     }
-                    .padding(.vertical, 14)
+                        .frame(
+                            width: reader.size.width,
+                            height: reader.size.height
+                        )
+                    
+                    Color.green
+                        .frame(
+                            width: reader.size.width,
+                            height: reader.size.height
+                        )
                 }
-                .frame(width: 247)
-                .padding(16)
-                .background(Color(uiColor: R.Color.white))
-                .cornerRadius(10)
             }
         }
     }
     
+    @State
+    var count = 0
+    
     let alert = PassthroughSubject<Void, Never>()
+    let countAlert = PassthroughSubject<Int, Never>()
 }
 
 struct AlertViewModifier_Previews: PreviewProvider {
