@@ -173,7 +173,7 @@ public struct SUWebView: UIViewRepresentable {
     }
     
     // MARK: - Public
-    public func onProgressChange(_ action: @escaping (Double) -> Void)-> Self {
+    public func onProgressChange(_ action: @escaping (Double) -> Void) -> Self {
         var view = self
         view.onProgressChange = action
         return view
@@ -214,7 +214,6 @@ public struct SUWebView: UIViewRepresentable {
         view.onNavigationResponse = action
         return view
     }
-    
     
     // MARK: - Private
 }
