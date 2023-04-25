@@ -61,6 +61,41 @@ final class ChapssalKitTests: XCTestCase {
         // Given
         
         // When
+        _ = R.Icon.ic16Add
+        _ = R.Icon.ic16Alarm
+        _ = R.Icon.ic16Archive
+        _ = R.Icon.ic16Attach
+        _ = R.Icon.ic16Back
+        _ = R.Icon.ic16Backward
+        _ = R.Icon.ic16Blind
+        _ = R.Icon.ic16Calendar
+        _ = R.Icon.ic16Chevron
+        _ = R.Icon.ic16Clear
+        _ = R.Icon.ic16Close
+        _ = R.Icon.ic16Collapse
+        _ = R.Icon.ic16Delete
+        _ = R.Icon.ic16Down
+        _ = R.Icon.ic16Dropdown
+        _ = R.Icon.ic16Forward
+        _ = R.Icon.ic16Graph
+        _ = R.Icon.ic16Home
+        _ = R.Icon.ic16Key
+        _ = R.Icon.ic16Link
+        _ = R.Icon.ic16Loop
+        _ = R.Icon.ic16Menu
+        _ = R.Icon.ic16Modify
+        _ = R.Icon.ic16Movein
+        _ = R.Icon.ic16Moveout
+        _ = R.Icon.ic16My
+        _ = R.Icon.ic16Notice
+        _ = R.Icon.ic16Password
+        _ = R.Icon.ic16Search
+        _ = R.Icon.ic16Settings
+        _ = R.Icon.ic16Up
+        _ = R.Icon.ic16View
+        _ = R.Icon.ic16Vision
+        _ = R.Icon.ic16Warning
+        
         _ = R.Icon.ic24Add
         _ = R.Icon.ic24Alarm
         _ = R.Icon.ic24Archive
@@ -79,6 +114,7 @@ final class ChapssalKitTests: XCTestCase {
         _ = R.Icon.ic24Forward
         _ = R.Icon.ic24Graph
         _ = R.Icon.ic24Home
+        _ = R.Icon.ic24Key
         _ = R.Icon.ic24Link
         _ = R.Icon.ic24Loop
         _ = R.Icon.ic24Menu
@@ -106,7 +142,7 @@ final class ChapssalKitTests: XCTestCase {
         // Then
     }
     
-    func test_that_load_localizable() {
+    func test_that_load_localization() {
         // Given
         
         // When

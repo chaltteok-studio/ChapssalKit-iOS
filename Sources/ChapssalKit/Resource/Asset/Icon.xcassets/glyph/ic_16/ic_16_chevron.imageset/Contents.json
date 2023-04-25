@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic_16_chevron.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
