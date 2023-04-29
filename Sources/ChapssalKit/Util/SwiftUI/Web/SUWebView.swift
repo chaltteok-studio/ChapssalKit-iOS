@@ -59,26 +59,9 @@ public struct SUWebView: UIViewRepresentable {
         }
         
         public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
-            if navigationAction.request.url?.pathExtension == "html" {
-                Task {
-                    guard let (data, _) = try? await URLSession.shared.data(for: navigationAction.request),
-                          let html = String(data: data, encoding: .utf8)
-                    else {
-                        return
-                    }
-                    
-                    var baseURL = navigationAction.request.url
-                    baseURL?.deleteLastPathComponent()
-                    
-                    await webView.loadHTMLString(html, baseURL: baseURL)
-                }
-                
-                decisionHandler(.cancel, preferences)
-            } else {
-                Task {
-                    let decision = await onNavigationAction?(navigationAction, preferences)
-                    decisionHandler(decision?.0 ?? .allow, decision?.1 ?? preferences)
-                }
+            Task {
+                let decision = await onNavigationAction?(navigationAction, preferences)
+                decisionHandler(decision?.0 ?? .allow, decision?.1 ?? preferences)
             }
         }
         
