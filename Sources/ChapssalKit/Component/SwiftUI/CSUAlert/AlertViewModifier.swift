@@ -81,12 +81,13 @@ struct AlertViewModifier<Data, Alert: View>: ViewModifier {
     func body(content: Content) -> some View {
         content.background(
             ToastContainer { layer in
+                let window = layer.view?.window
                 Group {
-                    if let screen = layer.window?.screen {
+                    if let screen = window?.screen {
                         GeometryReader { reader in
                             let frame = reader.frame(in: .global)
                             
-                            if let scene = layer.window?.windowScene {
+                            if let scene = window?.windowScene {
                                 let queue = AlertQueue.queue(scene: scene)
                                 
                                 Color.clear
@@ -140,7 +141,7 @@ struct AlertViewModifier<Data, Alert: View>: ViewModifier {
                     }
                 }
                     .subscribe(publisher) { data in
-                        let queue = AlertQueue.queue(scene: layer.window?.windowScene)
+                        let queue = AlertQueue.queue(scene: window?.windowScene)
                         
                         Task {
                             if queue.isEmpty {
