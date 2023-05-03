@@ -16,7 +16,7 @@ public struct SUTextView: UIViewRepresentable {
         @Binding
         var text: String
         
-        var validator: (any Validator<String>)?
+        var validator: AnyValidator<String>?
         private var inputAccessoryViewCache: ComposableView?
         
         private let isEditing: Binding<Bool>?
@@ -107,7 +107,7 @@ public struct SUTextView: UIViewRepresentable {
     public var inputAccessoryViewHeight: CGFloat = 0
     public var inputAccessoryView: (any View)? = nil
     
-    public var validator: (any Validator<String>)?
+    public var validator: AnyValidator<String>?
     
     @OptionalState
     public var isEditing: Bool = false
@@ -244,7 +244,7 @@ public struct SUTextView: UIViewRepresentable {
         )
     }
     
-    public func validator(_ validator: (any Validator<String>)?) -> Self {
+    public func validator(_ validator: AnyValidator<String>?) -> Self {
         var view = self
         view.validator = validator
         return view
