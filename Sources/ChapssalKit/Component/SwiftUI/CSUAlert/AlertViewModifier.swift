@@ -131,7 +131,7 @@ struct AlertViewModifier<Data, Alert: View>: ViewModifier {
                                             }
                                             
                                             isShow = (item?.data as? Data) != nil
-                                    }
+                                        }
                             }
                         }
                             .frame(
@@ -229,9 +229,7 @@ struct AlertViewModifier_Preview: View {
                                                     .frame(maxWidth: .infinity)
                                             }
                                             Button {
-                                                dismiss {
-                                                    print("A")
-                                                }
+                                                dismiss(nil)
                                             } label: {
                                                 Text("No, Cancel")
                                                     .font(Font(R.Font.font(ofSize: 16, weight: .medium)))

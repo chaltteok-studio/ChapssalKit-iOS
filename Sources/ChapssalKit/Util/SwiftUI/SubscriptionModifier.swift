@@ -10,7 +10,7 @@ import Combine
 /// Adds an action to perform when this view detects data emitted by the given publisher.
 ///
 /// Modifier's behavior is simillar with `onReceive(_:perform:)`. But it keep subscription through this view's lifecycle.
-/// In contrast, `onReceive` keep subscription until this view re-rendered.
+/// In contrast, `onReceive` keep subscription until own view re-rendered by parent.
 struct SubscriptionModifier<P: Publisher>: ViewModifier where P.Failure == Never {
     // MARK: - Property
     @StateObject
