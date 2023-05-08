@@ -81,67 +81,67 @@ struct AlertViewModifier<Data, Alert: View>: ViewModifier {
     func body(content: Content) -> some View {
         content.background(
             ToastContainer { layer in
-                let window = layer.view?.window
                 Group {
-                    if let screen = window?.screen {
+                    if let window = layer.view?.window,
+                       let scene = window.windowScene {
+                        let queue = AlertQueue.queue(scene: scene)
+                        
                         GeometryReader { reader in
                             let frame = reader.frame(in: .global)
                             
-                            if let scene = window?.windowScene {
-                                let queue = AlertQueue.queue(scene: scene)
-                                
-                                Color.clear
-                                    .toast(
-                                        $isShow,
-                                        duration: duration,
-                                        layouts: [
-                                            .inside(.top),
-                                            .inside(.trailing),
-                                            .inside(.bottom),
-                                            .inside(.leading)
-                                        ],
-                                        showAnimation: .fadeIn(duration: 0.2),
-                                        hideAnimation: .fadeOut(duration: 0.2),
-                                        hidden: { _ in
-                                            queue.check()
-                                        }
-                                    ) {
-                                        if let data = queue.item?.data as? Data {
-                                            var completion: (() -> Void)?
-                                            
-                                            alert(data) {
-                                                completion = $0
-                                                
-                                                queue.remove()
-                                                queue.reset()
-                                            }
-                                                .onDisappear {
-                                                    completion?()
-                                                }
-                                        }
+                            Color.clear
+                                .toast(
+                                    $isShow,
+                                    duration: duration,
+                                    layouts: [
+                                        .inside(.top),
+                                        .inside(.trailing),
+                                        .inside(.bottom),
+                                        .inside(.leading)
+                                    ],
+                                    showAnimation: .fadeIn(duration: 0.2),
+                                    hideAnimation: .fadeOut(duration: 0.2),
+                                    hidden: { _ in
+                                        queue.check()
                                     }
-                                        .offset(
-                                            x: -frame.minX,
-                                            y: -frame.minY
-                                        )
-                                        .subscribe(queue.$item) { item in
-                                            guard item?.id == id else {
-                                                isShow = false
-                                                return
-                                            }
+                                ) {
+                                    if let data = queue.item?.data as? Data {
+                                        var completion: (() -> Void)?
+                                        
+                                        alert(data) {
+                                            completion = $0
                                             
-                                            isShow = (item?.data as? Data) != nil
+                                            queue.remove()
+                                            queue.reset()
                                         }
-                            }
+                                            .onDisappear {
+                                                completion?()
+                                            }
+                                    }
+                                }
+                                    .offset(
+                                        x: -frame.minX,
+                                        y: -frame.minY
+                                    )
                         }
                             .frame(
-                                width: screen.bounds.width,
-                                height: screen.bounds.height
+                                width: window.screen.bounds.width,
+                                height: window.screen.bounds.height
                             )
+                            .subscribe(queue.$item) { item in
+                                guard item?.id == id else {
+                                    isShow = false
+                                    return
+                                }
+                                
+                                isShow = (item?.data as? Data) != nil
+                            }
                     }
                 }
                     .subscribe(publisher) { data in
-                        let queue = AlertQueue.queue(scene: window?.windowScene)
+                        guard let scene = layer.view?.window?.windowScene else { return }
+                        
+                        let queue = AlertQueue.queue(scene: scene)
                         
                         Task {
                             if queue.isEmpty {
