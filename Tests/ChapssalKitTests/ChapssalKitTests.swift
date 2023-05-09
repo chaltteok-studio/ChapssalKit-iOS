@@ -88,6 +88,8 @@ final class ChapssalKitTests: XCTestCase {
         _ = R.Icon.ic16Moveout
         _ = R.Icon.ic16My
         _ = R.Icon.ic16Notice
+        _ = R.Icon.ic16Off
+        _ = R.Icon.ic16On
         _ = R.Icon.ic16Password
         _ = R.Icon.ic16Search
         _ = R.Icon.ic16Settings
@@ -123,6 +125,8 @@ final class ChapssalKitTests: XCTestCase {
         _ = R.Icon.ic24Moveout
         _ = R.Icon.ic24My
         _ = R.Icon.ic24Notice
+        _ = R.Icon.ic24Off
+        _ = R.Icon.ic24On
         _ = R.Icon.ic24Password
         _ = R.Icon.ic24Search
         _ = R.Icon.ic24Settings
