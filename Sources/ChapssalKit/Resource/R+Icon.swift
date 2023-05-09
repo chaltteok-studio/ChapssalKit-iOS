@@ -41,6 +41,8 @@ public extension R.Icon {
     static var ic16Moveout: UIImage { .init(named: "ic_16_moveout", in: .module, compatibleWith: nil)!.glyph }
     static var ic16My: UIImage { .init(named: "ic_16_my", in: .module, compatibleWith: nil)!.glyph }
     static var ic16Notice: UIImage { .init(named: "ic_16_notice", in: .module, compatibleWith: nil)!.glyph }
+    static var ic16Off: UIImage { .init(named: "ic_16_off", in: .module, compatibleWith: nil)!.glyph }
+    static var ic16On: UIImage { .init(named: "ic_16_on", in: .module, compatibleWith: nil)!.glyph }
     static var ic16Password: UIImage { .init(named: "ic_16_password", in: .module, compatibleWith: nil)!.glyph }
     static var ic16Search: UIImage { .init(named: "ic_16_search", in: .module, compatibleWith: nil)!.glyph }
     static var ic16Settings: UIImage { .init(named: "ic_16_settings", in: .module, compatibleWith: nil)!.glyph }
@@ -77,6 +79,8 @@ public extension R.Icon {
     static var ic24Moveout: UIImage { .init(named: "ic_24_moveout", in: .module, compatibleWith: nil)!.glyph }
     static var ic24My: UIImage { .init(named: "ic_24_my", in: .module, compatibleWith: nil)!.glyph }
     static var ic24Notice: UIImage { .init(named: "ic_24_notice", in: .module, compatibleWith: nil)!.glyph }
+    static var ic24Off: UIImage { .init(named: "ic_24_off", in: .module, compatibleWith: nil)!.glyph }
+    static var ic24On: UIImage { .init(named: "ic_24_on", in: .module, compatibleWith: nil)!.glyph }
     static var ic24Password: UIImage { .init(named: "ic_24_password", in: .module, compatibleWith: nil)!.glyph }
     static var ic24Search: UIImage { .init(named: "ic_24_search", in: .module, compatibleWith: nil)!.glyph }
     static var ic24Settings: UIImage { .init(named: "ic_24_settings", in: .module, compatibleWith: nil)!.glyph }
