@@ -21,13 +21,9 @@ public struct CSUNavigationBar: View {
         public var backgroundColor: Color = Color(uiColor: R.Color.white)
         
         @Config
-        public var leftAccessories: [any View] = []
+        public var leftAccessory: any View = EmptyView()
         @Config
-        public var leftInterAccessoriesSpacing: CGFloat = 16
-        @Config
-        public var rightAccessories: [any View] = []
-        @Config
-        public var rightInterAccessoriesSpacing: CGFloat = 16
+        public var rightAccessory: any View = EmptyView()
         
         @Config
         public var style: any CSUNavigationBarStyle = .plain
@@ -44,12 +40,10 @@ public struct CSUNavigationBar: View {
         var body: some View {
             HStack(spacing: 16) {
                 LeftAccessoryContainer()
-                    .layoutPriority(1)
                 
                 TitleLabel()
                 
                 RightAccessoryContainer()
-                    .layoutPriority(1)
             }
                 .padding(16)
                 .frame(
@@ -81,41 +75,34 @@ public struct CSUNavigationBar: View {
         private func LeftAccessoryContainer() -> some View {
             if alignment == .center {
                 HStack {
-                    LeftAccessories()
+                    AnyView(config.leftAccessory)
+                        .overlay(
+                            GeometryReader { reader in
+                                Color.clear
+                                    .onAppear {
+                                        leftAccessoryWidth = reader.size.width
+                                    }
+                            }
+                        )
                     Spacer(minLength: 0)
                 }
-                    .frame(
-                        maxWidth: max(
-                            leftAccessoriesWidth,
-                            rightAccessoriesWidth
-                        )
+                .frame(
+                    maxWidth: accessoryWidth(
+                        left: leftAccessoryWidth,
+                        right: rightAccessoryWidth
                     )
-            } else {
-                if config.leftAccessories.isEmpty {
-                    EmptyView()
-                } else {
-                    LeftAccessories()
-                }
-            }
-        }
-        
-        @ViewBuilder
-        private func LeftAccessories() -> some View {
-            let accessories = config.leftAccessories.map { AnyView($0) }
-            
-            HStack(spacing: config.leftInterAccessoriesSpacing) {
-                ForEach(0 ..< accessories.count, id: \.self) {
-                    accessories[$0]
-                }
-            }
-                .overlay(
-                    GeometryReader { reader in
-                        Color.clear
-                            .onAppear {
-                                leftAccessoriesWidth = reader.size.width
-                            }
-                    }
                 )
+            } else {
+                AnyView(config.leftAccessory)
+                    .overlay(
+                        GeometryReader { reader in
+                            Color.clear
+                                .onAppear {
+                                    leftAccessoryWidth = reader.size.width
+                                }
+                        }
+                    )
+            }
         }
         
         @ViewBuilder
@@ -123,40 +110,33 @@ public struct CSUNavigationBar: View {
             if alignment == .center {
                 HStack {
                     Spacer(minLength: 0)
-                    RightAccessories()
-                }
-                    .frame(
-                        maxWidth: max(
-                            leftAccessoriesWidth,
-                            rightAccessoriesWidth
-                        )
-                    )
-            } else {
-                if config.rightAccessories.isEmpty {
-                    EmptyView()
-                } else {
-                    RightAccessories()
-                }
-            }
-        }
-        
-        @ViewBuilder
-        private func RightAccessories() -> some View {
-            let accessories = config.rightAccessories.map { AnyView($0) }
-            
-            HStack(spacing: config.rightInterAccessoriesSpacing) {
-                ForEach(0 ..< accessories.count, id: \.self) {
-                    accessories[$0]
-                }
-            }
-                .overlay(
-                    GeometryReader { reader in
-                        Color.clear
-                            .onAppear {
-                                rightAccessoriesWidth = reader.size.width
+                    AnyView(config.rightAccessory)
+                        .overlay(
+                            GeometryReader { reader in
+                                Color.clear
+                                    .onAppear {
+                                        rightAccessoryWidth = reader.size.width
+                                    }
                             }
-                    }
+                        )
+                }
+                .frame(
+                    maxWidth: accessoryWidth(
+                        left: leftAccessoryWidth,
+                        right: rightAccessoryWidth
+                    )
                 )
+            } else {
+                AnyView(config.rightAccessory)
+                    .overlay(
+                        GeometryReader { reader in
+                            Color.clear
+                                .onAppear {
+                                    rightAccessoryWidth = reader.size.width
+                                }
+                        }
+                    )
+            }
         }
         
         // MARK: - Property
@@ -164,9 +144,9 @@ public struct CSUNavigationBar: View {
         private let alignment: Alignment
         
         @State
-        private var leftAccessoriesWidth: CGFloat = 0
+        private var leftAccessoryWidth: CGFloat?
         @State
-        private var rightAccessoriesWidth: CGFloat = 0
+        private var rightAccessoryWidth: CGFloat?
         
         @Environment(\.csuNavigationBar)
         private var config: Configuration
@@ -183,6 +163,21 @@ public struct CSUNavigationBar: View {
         // MARK: - Public
         
         // MARK: - Private
+        private func accessoryWidth(left: CGFloat?, right: CGFloat?) -> CGFloat {
+            switch (left, right) {
+            case let (.some(lhs), .some(rhs)):
+                return max(lhs, rhs)
+                
+            case (let .some(lhs), _):
+                return lhs
+                
+            case (_, let .some(rhs)):
+                return rhs
+                
+            default:
+                return .infinity
+            }
+        }
     }
     
     // MARK: - View
