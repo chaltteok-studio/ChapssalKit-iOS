@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "jstoast",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wlsdms0122/JSToast.git",
+      "state" : {
+        "revision" : "0be9f57c5161fd5314fbf28bf78c847e8ffc417d",
+        "version" : "2.6.5"
+      }
+    },
+    {
       "identity" : "lottie-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/airbnb/lottie-ios.git",
@@ -23,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wlsdms0122/Validator.git",
       "state" : {
-        "revision" : "ed80e980496b39ce0538bd83320e4ae30d1a2c85",
-        "version" : "1.0.2"
+        "revision" : "fe821b2e3276c12d33f4d67711d6462f87c25a80",
+        "version" : "1.0.3"
       }
     }
   ],
