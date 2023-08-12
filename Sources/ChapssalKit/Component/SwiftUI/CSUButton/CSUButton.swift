@@ -358,7 +358,7 @@ struct CSUButton_Preview: View {
                         .font(Font(R.Font.font(ofSize: 14, weight: .light)))
                     
                     HStack {
-                        CSUButton(image: Image(uiImage: R.Icon.ic24Archive)) { }
+                        CSUButton(image: Image(uiImage: R.Icon.archive)) { }
                             .csuButton(\.animation, nil)
                             .csuButton(\.cornerRadius, 26)
                             .fixedSize()

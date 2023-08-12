@@ -211,7 +211,7 @@ public struct CSUTextField: View {
                 Button {
                     text = ""
                 } label: {
-                    Image(uiImage: R.Icon.ic24Clear)
+                    Image(uiImage: R.Icon.clear)
                         .foregroundColor(Color(uiColor: R.Color.gray04))
                 }
                     .buttonStyle(.plain)
@@ -220,7 +220,7 @@ public struct CSUTextField: View {
         
         @ViewBuilder
         private func SecureTextEntryButton() -> some View {
-            let image = isSecureTextEntry ? R.Icon.ic24Vision : R.Icon.ic24Blind
+            let image = isSecureTextEntry ? R.Icon.vision : R.Icon.blind
             let color = isEditing ? config.tintColor : R.Color.gray04
             
             if !config.secureTextEntryMode.isHidden(
