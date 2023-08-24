@@ -8,9 +8,11 @@
 import SwiftUI
 
 public struct EdgeBorder: Shape {
+    // MARK: - Property
     public var edges: Edge.Set
     public var cornerRadius: CGFloat
     
+    // MARK: - Initiailzer
     public init(
         edges: Edge.Set = .all,
         cornerRadius: CGFloat = 0
@@ -19,6 +21,7 @@ public struct EdgeBorder: Shape {
         self.cornerRadius = cornerRadius
     }
     
+    // MARK: - Lifecycle
     public func path(in rect: CGRect) -> Path {
         let cornerRadius = min(cornerRadius, min(rect.width / 2, rect.height / 2))
         
@@ -204,4 +207,8 @@ public struct EdgeBorder: Shape {
             }
         }
     }
+    
+    // MARK: - Public
+    
+    // MARK: - Private
 }

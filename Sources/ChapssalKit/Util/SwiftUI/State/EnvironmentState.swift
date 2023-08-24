@@ -9,6 +9,7 @@ import SwiftUI
 
 @propertyWrapper
 public struct EnvironmentState<T>: DynamicProperty {
+    // MARK: - Property
     private let state: State<T>
     @Environment
     private var environment: Binding<T>?
@@ -26,6 +27,7 @@ public struct EnvironmentState<T>: DynamicProperty {
         environment ?? state.projectedValue
     }
     
+    // MARK: - Initializer
     public init(
         wrappedValue: T,
         _ keyPath: KeyPath<EnvironmentValues, Binding<T>?>
@@ -33,4 +35,8 @@ public struct EnvironmentState<T>: DynamicProperty {
         self.state = .init(initialValue: wrappedValue)
         self._environment = .init(keyPath)
     }
+    
+    // MARK: - Public
+    
+    // MARK: - Private
 }

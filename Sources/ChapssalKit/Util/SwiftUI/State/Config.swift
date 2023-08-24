@@ -9,6 +9,7 @@ import Foundation
 
 @propertyWrapper
 public struct Config<Value> {
+    // MARK: - Property
     private var set: Bool = false
     public var wrappedValue: Value {
         didSet {
@@ -22,7 +23,12 @@ public struct Config<Value> {
         }
     }
     
+    // MARK: - Initializer
     public init(wrappedValue: Value) {
         self.wrappedValue = wrappedValue
     }
+    
+    // MARK: - Public
+    
+    // MARK: - Private
 }

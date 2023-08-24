@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wlsdms0122/Compose.git",
       "state" : {
-        "revision" : "6841f603b3bae0e9cbf66e684a220463248841b7",
-        "version" : "1.2.1"
+        "revision" : "3bb651dcc76272859f33519ddff27c0efbfd7efb",
+        "version" : "1.6.0"
       }
     },
     {
