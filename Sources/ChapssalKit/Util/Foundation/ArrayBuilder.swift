@@ -52,5 +52,4 @@ struct ArrayBuilder<Element> {
     static func buildPartialBlock(accumulated: [Element], next: [Element]) -> [Element] {
         accumulated + next
     }
-    
 }
